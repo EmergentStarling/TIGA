@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+
+    android:paddingBottom="8dp"
+    android:paddingTop="8dp"
+    tools:context=".MainActivities.Room_Inventory">
+
+    <Button
+        android:id="@+id/add_walls_btn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="top"
+        android:text="Add Walls" />
+    <Button
+        android:id="@+id/add_objects_btn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="2dp"
+        android:text="Add Objects" />
+
+    <Button
+        android:id="@+id/add_Document_btn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="2dp"
+        android:text="Add Documents" />
+
+
+
+</LinearLayout>
