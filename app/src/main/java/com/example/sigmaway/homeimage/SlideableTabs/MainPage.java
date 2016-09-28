@@ -21,11 +21,11 @@ import com.example.sigmaway.homeimage.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainPage extends AppCompatActivity implements ViewPager.OnPageChangeListener,TabHost.OnTabChangeListener,Communicator {
+public class MainPage extends AppCompatActivity implements ViewPager.OnPageChangeListener,TabHost.OnTabChangeListener {
     public ViewPager viewPager;
     TabHost tabHost;
     String TAG= "in main";
-    Myfragmentpageradapter myfragmentpageradapter
+
 
     Intent getintent;
     String language;
@@ -128,17 +128,17 @@ public class MainPage extends AppCompatActivity implements ViewPager.OnPageChang
 
 
 
-        myfragmentpageradapter = new Myfragmentpageradapter(getSupportFragmentManager(),listFragments);
+        Myfragmentpageradapter myfragmentpageradapter= new Myfragmentpageradapter(getSupportFragmentManager(),listFragments);
         viewPager.setAdapter(myfragmentpageradapter);
         viewPager.addOnPageChangeListener(this);
     }
 
-    @Override
+/*    @Override
     public void update() {
         FragmentManager manager=
         Fragment analysis=(AnalysedData)myfragmentpageradapter.findFragmentByTag("Analysed Data");
-        analysis.se
-    }
+
+    }*/
 
     public  class FakeContent implements TabHost.TabContentFactory
     {   Context context;
