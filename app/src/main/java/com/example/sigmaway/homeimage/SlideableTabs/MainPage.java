@@ -21,7 +21,7 @@ import com.example.sigmaway.homeimage.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainPage extends AppCompatActivity implements ViewPager.OnPageChangeListener,TabHost.OnTabChangeListener {
+public class MainPage extends AppCompatActivity implements ViewPager.OnPageChangeListener,TabHost.OnTabChangeListener,Communicator {
     public ViewPager viewPager;
     TabHost tabHost;
     String TAG= "in main";
@@ -89,21 +89,33 @@ public class MainPage extends AppCompatActivity implements ViewPager.OnPageChang
         View tabview = tabHost.getCurrentTabView();
         int scrollpos= tabview.getLeft()-(horizontalScrollView.getWidth()-tabview.getWidth())/2;
         horizontalScrollView.smoothScrollTo(scrollpos,0);
+
+
     }
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+        Log.wtf("onPageScrolled","called");
+
+        int selecteditem= tabHost.getCurrentTab();
+
     }
 
     @Override
     public void onPageSelected(int selecteditem) {
+        Log.wtf("here","called");
         tabHost.setCurrentTab(selecteditem);
+     /*   if (tabHost.getCurrentTabTag().equals("Analysed Data"))
+        {
+            TabHost.TabSpec tabSpec=tabHost.getAccessibilityClassName();
+            v.invalidate();
+        }*/
     }
 
     @Override
     public void onPageScrollStateChanged(int state) {
-
+    Log.wtf("onPageScrollStateChanged","called");
     }
 
     private void initViewPager() {
@@ -133,12 +145,12 @@ public class MainPage extends AppCompatActivity implements ViewPager.OnPageChang
         viewPager.addOnPageChangeListener(this);
     }
 
-/*    @Override
+    @Override
     public void update() {
-        FragmentManager manager=
-        Fragment analysis=(AnalysedData)myfragmentpageradapter.findFragmentByTag("Analysed Data");
-
-    }*/
+        FragmentManager manager=getSupportFragmentManager();
+        AnalysedData analysis=(AnalysedData)manager.findFragmentByTag("Analysed Data");
+        analysis.setwebview();
+    }
 
     public  class FakeContent implements TabHost.TabContentFactory
     {   Context context;

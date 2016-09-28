@@ -4,9 +4,9 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.support.v4.app.FragmentManager;
 import android.util.Base64;
 import android.util.Log;
-import android.widget.Button;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -15,10 +15,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.sigmaway.homeimage.CustomClasses.Communicator;
 import com.example.sigmaway.homeimage.CustomClasses.DataBaseAdapter;
 import com.example.sigmaway.homeimage.R;
-
-import org.json.JSONException;
+import com.example.sigmaway.homeimage.SlideableTabs.AnalysedData;
 
 import java.io.File;
 import java.util.HashMap;
@@ -31,6 +31,7 @@ import java.util.Map;
 public class ServerCall {
     File file;
     long id;
+    Communicator comm;
     public void Servercall(final Context c, final ProgressDialog progressDialog)
     {    final SharedPreferences sharedPref = c.getSharedPreferences("shrdpref", Context.MODE_PRIVATE);
         Uri ImageUri = Uri.parse(sharedPref.getString("ImgUri", "no name"));

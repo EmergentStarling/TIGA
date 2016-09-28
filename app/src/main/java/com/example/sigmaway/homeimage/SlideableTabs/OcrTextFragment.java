@@ -33,7 +33,7 @@ public class OcrTextFragment extends Fragment {
     TextView ImageKey;
     List<String> value;
     File file;
-    //Communicator comm;
+    Communicator comm;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -86,9 +86,6 @@ public class OcrTextFragment extends Fragment {
                 VolleySendData obj=new VolleySendData();
                 String result= obj.VolleySend(getActivity(),info);
                 Toast.makeText(getActivity(),result,Toast.LENGTH_LONG);
-               /* comm= (Communicator) getActivity();
-                comm.update();*/
-
             }
         });
     }

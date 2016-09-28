@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">Home Image</string>
+    <string name="app_name">TIGA</string>
     <string name="title_activity_image_display">ImageDisplay</string>
-
     <string name="title_activity_direct_document">DirectDocument</string>
 </resources>

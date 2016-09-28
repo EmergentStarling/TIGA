@@ -13,7 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.sigmaway.homeimage.CustomClasses.DataBaseAdapter;
 import com.example.sigmaway.homeimage.R;
@@ -27,11 +29,20 @@ import java.io.File;
 public class AnalysedData extends android.support.v4.app.Fragment {
     WebView AnalysedData;
     File file;
+    Button Refresh;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.analysed_data, container, false);
         AnalysedData= (WebView) v.findViewById(R.id.analysed_text);
+        Refresh= (Button) v.findViewById(R.id.RefreshButton);
+        Refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setwebview();
+                Toast.makeText(getActivity(),"Analysis Updated",Toast.LENGTH_LONG);
+            }
+        });
         AnalysedData.getSettings().setBuiltInZoomControls(true);
         AnalysedData.getSettings().setDisplayZoomControls(true);
        // AnalysedData.setMovementMethod(new ScrollingMovementMethod());
@@ -51,10 +62,10 @@ public class AnalysedData extends android.support.v4.app.Fragment {
     public void setwebview(){
         DataBaseAdapter dataBaseAdapter =new DataBaseAdapter(getActivity().getApplicationContext());
         String analyseddata=dataBaseAdapter.GetAnalysedText(file.getName());
-
+        Log.wtf("setwebview","called");
         if (/*analyseddata.equals("NULL")||*/ (analyseddata==null))
             //      AnalysedData.setText("YOU FORGOT TO SEND DATA FOR ANALYSIS :p");
-            AnalysedData.loadData("YOU FORGOT TO SEND DATA FOR ANALYSIS :p", "text", "utf-8");
+            AnalysedData.loadData("<HTML><body><P>YOU FORGOT TO SEND DATA FOR ANALYSIS or CLICK BUTTON BELOW </P></BODY></hTML>", "text", null);
         else
             //    AnalysedData.setText(Html.fromHtml(analyseddata));
             AnalysedData.loadData(analyseddata, "text/html" , "utf-8");

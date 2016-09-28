@@ -358,7 +358,7 @@ public class DirectDocument extends AppCompatActivity {
                 File file=new File(String.valueOf(fileUri));
 
                 dataBaseAdapter =new DataBaseAdapter(DirectDocument.this);
-                long id=dataBaseAdapter.insertdata(file.getName(), String.valueOf(fileUri),"NULL","NULL","NULL","NULL","NULL");
+                long id=dataBaseAdapter.insertdata(file.getName(), String.valueOf(fileUri),"NULL","NULL","NULL","NULL","YOU FORGOT TO SEND DATA FOR ANALYSIS or CLICK BUTTON BELOW");
                 if (id==0)
                     Toast.makeText(getApplicationContext(),"data not inserted", Toast.LENGTH_SHORT).show();
                 else if (id>=1)
