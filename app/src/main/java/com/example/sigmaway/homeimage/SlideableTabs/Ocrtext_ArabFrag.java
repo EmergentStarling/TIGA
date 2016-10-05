@@ -136,7 +136,7 @@ public class Ocrtext_ArabFrag extends Fragment {
                 }
             return String.valueOf(text);
         }*/
-    public class translate extends AsyncTask<Void,Void,Integer>
+    private class translate extends AsyncTask<Void,Void,Integer>
     {
         ProgressDialog progress;
         @Override
@@ -176,17 +176,17 @@ public class Ocrtext_ArabFrag extends Fragment {
                         JSONObject translatedText=translationsobj.getJSONObject(0);
                         String transtext= translatedText.getString("translatedText");
                         DataBaseAdapter dataBaseAdapter =new DataBaseAdapter(getActivity().getApplicationContext());
+                        long id=0;
                         if (pos==0)
                         {
-                            long id=dataBaseAdapter.updatedata(file.getName(),"transtext",transtext);
+                             id=dataBaseAdapter.updatedata(file.getName(),"transtext",transtext);
                         }
 
                         else if (pos==1)
                         {
-                            long id=dataBaseAdapter.updatedata(file.getName(),"engtransdata",transtext);
+                           id=dataBaseAdapter.updatedata(file.getName(),"engtransdata",transtext);
                         }
                             target="en";
-                        long id=dataBaseAdapter.updatedata(file.getName(),"transtext",transtext);
                         MainPage fake= new MainPage();
 
                         Log.wtf("key if id", String.valueOf(id));

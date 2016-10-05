@@ -4,12 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="8dp"
+
     tools:context="com.example.sigmaway.homeimage.SlideableTabs.TranslatedTextFrag">
     <TextView
         android:id="@+id/translated_text"
         android:layout_width="match_parent"
         android:scrollbars="vertical"
+        android:padding="8dp"
         android:background="@color/tan"
         android:layout_height="match_parent"
         android:layout_weight="1"/>
