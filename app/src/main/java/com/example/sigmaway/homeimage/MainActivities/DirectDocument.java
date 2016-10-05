@@ -1,5 +1,6 @@
 package com.example.sigmaway.homeimage.MainActivities;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -9,12 +10,16 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -97,23 +102,43 @@ public class DirectDocument extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!OpenCVLoader.initDebug()) {
+
+        /*if (!OpenCVLoader.initDebug()) {
             Log.e(TAG, "Cannot connect to OpenCV Manager");
         } else {
             mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
-        }
-
-
-
-
+        }*/
         sharedPref = getApplication().getSharedPreferences("shrdpref", MODE_PRIVATE);
+
         Picture_URI = new ArrayList<Uri>();
         Picture_Name = new ArrayList<String>();
         gridviewid = 0.1;
+        if (Build.VERSION.SDK_INT < 23)
+        {
+            File mediaStorageDir = new File(Environment.getExternalStorageDirectory(), "Sigmaway/" + "Documents");
+            final File[] fList = mediaStorageDir.listFiles();
+            if (!(fList == null)) {
+                for (File file : fList) {
+                    String fileURI = file.getPath();
+                    if (fileURI.endsWith(".jpg")) {
+                        String[] name = file.getName().split("_");
+                        Picture_Name.add(name[name.length - 3]);
+                        Picture_URI.add(Uri.parse(file.getAbsolutePath()));
+                        wall_gridView.invalidateViews();
+                    }
+                }
+            }
+        }
+        else{
+            StoragePermissionGranted1();
+        }
 
-        captureImage();
+       //this.requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.directdocument);
 
+      // this.getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.titlebar);
+        /*setTitle("TIGA");*/
+      //  getActionBar().setIcon(R.mipmap.ic_tig_xxxhdpi640);
         Log.wtf("Oncreate"," Hi");
         OcrLanguageSelector= (Spinner) findViewById(R.id.ocr_language);
         ArrayAdapter Spinner_Adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item,lang_list);
@@ -122,12 +147,9 @@ public class DirectDocument extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 SpinnerPosition = position;
-
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
         ocrLanguageBtn= (Button) findViewById(R.id.ocr_language_btn);
@@ -171,18 +193,7 @@ public class DirectDocument extends AppCompatActivity {
             }
         });
 
-        File mediaStorageDir = new File(Environment.getExternalStorageDirectory(), "Sigmaway/" + "Documents");
-        final File[] fList = mediaStorageDir.listFiles();
-        if (!(fList == null)) {
-            for (File file : fList) {
-                String fileURI = file.getPath();
-                if (fileURI.endsWith(".jpg")) {
-                    String[] name = file.getName().split("_");
-                    Picture_Name.add(name[name.length - 3]);
-                    Picture_URI.add(Uri.parse(file.getAbsolutePath()));
-                }
-            }
-        }
+
         //Click Button
         click = (Button) findViewById(R.id.click_btn);
         click.setOnClickListener(new View.OnClickListener() {
@@ -380,7 +391,8 @@ public class DirectDocument extends AppCompatActivity {
                         .show();
             }
         }
-
+        if (requestCode == 1)
+            Log.w("addhome","onrequestpermission 1");
     }
 
 
@@ -566,6 +578,92 @@ public class DirectDocument extends AppCompatActivity {
             startActivity(ImageDetails);
             progress.dismiss();
             super.onPostExecute(aVoid);
+        }
+    }
+    public void StoragePermissionGranted1() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (
+                    checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                            && checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                            && checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
+                    ) {
+                Log.v(TAG, "Permission is granted");
+                File mediaStorageDir = new File(Environment.getExternalStorageDirectory(), "Sigmaway/" + "Documents");
+                final File[] fList = mediaStorageDir.listFiles();
+                if (!(fList == null)) {
+                    for (File file : fList) {
+                        String fileURI = file.getPath();
+                        if (fileURI.endsWith(".jpg")) {
+                            String[] name = file.getName().split("_");
+                            Picture_Name.add(name[name.length - 3]);
+                            Picture_URI.add(Uri.parse(file.getAbsolutePath()));
+                            }
+                    }
+                }
+                captureImage();
+                //    return true;
+            } else {
+
+                Log.v(TAG, "Permission is revoked");
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.CAMERA,Manifest.permission.READ_LOGS},1 );
+//                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 2);
+//                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 3);
+                //  return false;
+            }
+        } else { //permission is automatically granted on sdk<23 upon installation
+            Log.v(TAG, "Permission is granted");
+            //return true;
+        }
+
+
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        Log.w("addhome","onrequestpermission");
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1) {
+            Log.w("addhome",permissions[0].toString()+"   "+ grantResults[0]);
+            Log.w("addhome",permissions[1].toString()+"   "+ grantResults[1]);
+            Log.w("addhome",permissions[2].toString()+"   "+ grantResults[2]);
+            if (permissions[0].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                Log.w("permission"," external");
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.v(TAG, "Permission: " + permissions[0] + "was " + grantResults[0]);
+                    //resume tasks needing this permission
+                    // Create the storage directory if it does not exist
+                    File mediaStorageDir = new File(Environment.getExternalStorageDirectory(), "Sigmaway/" + "Documents");
+                    final File[] fList = mediaStorageDir.listFiles();
+                    if (!(fList == null)) {
+                        for (File file : fList) {
+                            String fileURI = file.getPath();
+                            if (fileURI.endsWith(".jpg")) {
+                                String[] name = file.getName().split("_");
+                                Picture_Name.add(name[name.length - 3]);
+                                Picture_URI.add(Uri.parse(file.getAbsolutePath()));
+                                wall_gridView.invalidateViews();
+                            }
+                        }
+                    }
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "cannot create and access directory", Toast.LENGTH_SHORT).show();
+                }
+            }
+            if (permissions[2].equals(Manifest.permission.CAMERA))
+            {
+
+                Log.wtf("camera","permisson");
+                if (grantResults[2] == PackageManager.PERMISSION_GRANTED) {
+
+
+                    Log.v(TAG, "Permission: " + permissions[0] + "was " + grantResults[0]);
+                    captureImage();
+                    Toast.makeText(getApplicationContext(), "Camera Permission Granted", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Camera Permission Not Granted", Toast.LENGTH_SHORT).show();
+                }
+            }
+
         }
     }
 }

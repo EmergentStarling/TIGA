@@ -2,7 +2,6 @@ package com.example.sigmaway.homeimage.volley;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
@@ -12,6 +11,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.example.sigmaway.homeimage.CustomClasses.ImageInfo;
+import com.example.sigmaway.homeimage.R;
+import com.example.sigmaway.homeimage.SlideableTabs.MainPage;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -68,6 +69,8 @@ public class VolleySendData {
                                 }
                                 else if (Result.equals("Error updating data"))
                                     progress.dismiss();
+                                /*MainPage obj=new MainPage();
+                                obj.changepage();*/
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -84,7 +87,7 @@ public class VolleySendData {
                         protected Map<String, String> getParams() throws AuthFailureError {
                             Map<String, String> param1 = new HashMap<String, String>();
                             param1.put("image_name", info.ImageName);
-                            param1.put("image_keywords", info.Keyword);
+                            param1.put("image_keywords",c.getString(R.string.Key_Word)+info.Keyword);
                             param1.put("ocr_text", info.EngText);
                             param1.put("user_id", info.UserID);
                             return param1;

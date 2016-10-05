@@ -35,14 +35,14 @@ public class AnalysedData extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.analysed_data, container, false);
         AnalysedData= (WebView) v.findViewById(R.id.analysed_text);
-        Refresh= (Button) v.findViewById(R.id.RefreshButton);
+     /*   Refresh= (Button) v.findViewById(R.id.RefreshButton);
         Refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setwebview();
                 Toast.makeText(getActivity(),"Analysis Updated",Toast.LENGTH_LONG);
             }
-        });
+        });*/
         AnalysedData.getSettings().setBuiltInZoomControls(true);
         AnalysedData.getSettings().setDisplayZoomControls(true);
        // AnalysedData.setMovementMethod(new ScrollingMovementMethod());
@@ -56,10 +56,12 @@ public class AnalysedData extends android.support.v4.app.Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        Log.wtf("analysed data","called");
         setwebview();
     }
 
-    public void setwebview(){
+    public void setwebview()
+    {
         DataBaseAdapter dataBaseAdapter =new DataBaseAdapter(getActivity().getApplicationContext());
         String analyseddata=dataBaseAdapter.GetAnalysedText(file.getName());
         Log.wtf("setwebview","called");

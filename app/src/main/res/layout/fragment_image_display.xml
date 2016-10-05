@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_margin="10dp"
-        android:background="#bfd4f9"
+        android:background="@color/tan"
         android:scrollbars="horizontal"
         android:singleLine="true"/>
 </LinearLayout>

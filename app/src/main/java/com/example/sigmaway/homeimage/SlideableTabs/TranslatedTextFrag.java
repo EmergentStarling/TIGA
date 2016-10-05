@@ -74,6 +74,10 @@ public class TranslatedTextFrag extends Fragment   {
         Translatedtext= (TextView) getActivity().findViewById(R.id.translated_text);
        Translatedtext.setMovementMethod(new ScrollingMovementMethod());
         Log.wtf("translate frag","on resume");
+
+    }
+
+    public void settextview(){
         SharedPreferences sharedPref = getActivity().getSharedPreferences("shrdpref", Context.MODE_PRIVATE);
         Uri ImageUri = Uri.parse(sharedPref.getString("ImgUri", "no name"));
         final File file = new File(String.valueOf(ImageUri));
@@ -83,5 +87,4 @@ public class TranslatedTextFrag extends Fragment   {
         String value= dataBaseAdapter.GetTranslatedText(file.getName(),lang);
         Translatedtext.setText(value);
     }
-
 }

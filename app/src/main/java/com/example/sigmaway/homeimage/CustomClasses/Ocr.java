@@ -17,6 +17,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 
 import static com.googlecode.tesseract.android.TessBaseAPI.OEM_CUBE_ONLY;
+import static com.googlecode.tesseract.android.TessBaseAPI.OEM_DEFAULT;
 
 /**
  * Created by Family on 07-09-2016.
@@ -86,7 +87,7 @@ public class Ocr {
        baseApi.setDebug(true);
      Log.v(TAG, "Ctesseract 3" );
      if (lang.equals("eng"))
-    baseApi.init(DATA_PATH,lang);
+    baseApi.init(DATA_PATH,lang,OEM_DEFAULT);
      if (lang.equals("ara"))
       baseApi.init(DATA_PATH,lang,OEM_CUBE_ONLY);
      Log.v(TAG, "Ctesseract 4" );
@@ -95,10 +96,10 @@ public class Ocr {
        String recognizedText = baseApi.getUTF8Text();
      Log.v(TAG, "Ctesseract 6" );
        baseApi.end();
-    /*   if ( lang.equalsIgnoreCase("eng") )
-       {
-           recognizedText = recognizedText.replaceAll("[^a-zA-Z0-9]+", " ");
-       }*/
+       if ( lang.equalsIgnoreCase("eng") )
+     {
+         recognizedText = recognizedText.replaceAll("[^a-zA-Z0-9\\p{Punct}\\p{Space}]+", " ");
+     }
    /*  if ( lang.equalsIgnoreCase("ara") )
      {
          recognizedText = recognizedText.replaceAll("[0600-06FF]", " ");

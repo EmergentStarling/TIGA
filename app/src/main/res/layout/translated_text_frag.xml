@@ -10,12 +10,14 @@
         android:id="@+id/translated_text"
         android:layout_width="match_parent"
         android:scrollbars="vertical"
+        android:background="@color/tan"
         android:layout_height="match_parent"
         android:layout_weight="1"/>
     <Button
         android:id="@+id/sendforanalysis"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:background="@color/OliveGreen"
         android:text="Send For Analysis"
         android:textAllCaps="true"
         />

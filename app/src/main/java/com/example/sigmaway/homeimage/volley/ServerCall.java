@@ -19,6 +19,8 @@ import com.example.sigmaway.homeimage.CustomClasses.Communicator;
 import com.example.sigmaway.homeimage.CustomClasses.DataBaseAdapter;
 import com.example.sigmaway.homeimage.R;
 import com.example.sigmaway.homeimage.SlideableTabs.AnalysedData;
+import com.example.sigmaway.homeimage.SlideableTabs.MainPage;
+import com.example.sigmaway.homeimage.SlideableTabs.Myfragmentpageradapter;
 
 import java.io.File;
 import java.util.HashMap;
@@ -51,12 +53,19 @@ public class ServerCall {
                 if (id==0)
                 {
                     Log.wtf("Analysed data not updated", String.valueOf(id));
+                    /*MainPage obj=new MainPage();
+                    obj.changepage();*/
                     progressDialog.dismiss();
                 }
 
                 else if (id>=1) {
                     Log.wtf("Analysed data updated", String.valueOf(id));
+                 /*   MainPage obj=new MainPage();
+                    obj.changepage();*/
+               /*     MainPage obj=new MainPage();
+                    obj.analysedchanger();*/
                     progressDialog.dismiss();
+
                 }
             }
         }, new Response.ErrorListener() {
@@ -64,10 +73,10 @@ public class ServerCall {
             public void onErrorResponse(VolleyError error) {
                 Log.i("result", " hi fail listning" + error);
 
-                NetworkResponse response = error.networkResponse;
+              /*  NetworkResponse response = error.networkResponse;
                 String res = new String(response.data);
                 // Now you can use any deserializer to make sense of data
-                Log.wtf(" response", res);
+                Log.wtf(" response", res);*/
                 progressDialog.dismiss();
             }
         })
@@ -81,9 +90,8 @@ public class ServerCall {
                 String auth = "Basic " + Base64.encodeToString(creds.getBytes(), Base64.DEFAULT);
                 params.put("Authorization", auth);
                 return params;
-            }}
-                ;
+            }
+        };
         requestQueue.add(stringRequest);
-
     }
 }

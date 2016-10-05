@@ -32,4 +32,5 @@ dependencies {
     //compile 'com.google.api-client:google-api-client:1.22.0'
     compile 'com.android.support:support-v4:24.2.0'
     compile project(':openCVLibrary311')
+
 }

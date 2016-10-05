@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.HorizontalScrollView;
+import android.widget.Switch;
 import android.widget.TabHost;
 
 import com.example.sigmaway.homeimage.CustomClasses.Communicator;
@@ -26,10 +27,11 @@ public class MainPage extends AppCompatActivity implements ViewPager.OnPageChang
     TabHost tabHost;
     String TAG= "in main";
 
-
+    FragmentManager obj;
     Intent getintent;
     String language;
     Ocr OcrObj;
+    Myfragmentpageradapter myfragmentpageradapter;
     SharedPreferences sharedPref;
 
     @Override
@@ -42,11 +44,12 @@ public class MainPage extends AppCompatActivity implements ViewPager.OnPageChang
         initViewPager();
         Log.i(TAG, "2");
         initTabHost();
-
-
-
     }
-
+    public void analysedchanger(){
+        FragmentManager manager=getSupportFragmentManager();
+        AnalysedData analysis=(AnalysedData)manager.findFragmentByTag("Analysed Data");
+        analysis.setwebview();
+    }
     private void initTabHost() {
         Log.i(TAG,"3");
         tabHost=(TabHost) findViewById(R.id.tabHost);
@@ -69,6 +72,7 @@ public class MainPage extends AppCompatActivity implements ViewPager.OnPageChang
             TabHost.TabSpec tabSpec;
             tabSpec=tabHost.newTabSpec(tabname[i]);
             tabSpec.setIndicator(tabname[i]);
+
             Log.i(TAG, "6 1");
             tabSpec.setContent(new FakeContent(getApplicationContext()));
             Log.i(TAG, "6 1.2");
@@ -84,7 +88,6 @@ public class MainPage extends AppCompatActivity implements ViewPager.OnPageChang
 
         int selecteditem= tabHost.getCurrentTab();
         viewPager.setCurrentItem(selecteditem);
-
         HorizontalScrollView horizontalScrollView= (HorizontalScrollView) findViewById(R.id.horizonatal_scrool);
         View tabview = tabHost.getCurrentTabView();
         int scrollpos= tabview.getLeft()-(horizontalScrollView.getWidth()-tabview.getWidth())/2;
@@ -92,25 +95,35 @@ public class MainPage extends AppCompatActivity implements ViewPager.OnPageChang
 
 
     }
-
+/*public void changepage()
+{
+   Log.w("changepage", ""+viewPager);
+    viewPager.setCurrentItem(2);
+}*/
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
         Log.wtf("onPageScrolled","called");
-
-        int selecteditem= tabHost.getCurrentTab();
-
     }
 
     @Override
     public void onPageSelected(int selecteditem) {
         Log.wtf("here","called");
         tabHost.setCurrentTab(selecteditem);
-     /*   if (tabHost.getCurrentTabTag().equals("Analysed Data"))
-        {
-            TabHost.TabSpec tabSpec=tabHost.getAccessibilityClassName();
-            v.invalidate();
-        }*/
+        if (tabHost.getCurrentTabTag().equals("Analysed Data"))
+        { Log.w("main page analysed frag",obj.toString());
+            Log.w("tag for refresh","android:switcher:" + R.id.view_pager + ":" + viewPager.getCurrentItem());
+            AnalysedData analysis=(AnalysedData)obj.findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + viewPager.getCurrentItem());
+            Log.w("main page analysed frag",analysis.toString());
+            analysis.setwebview();
+        }
+        if (tabHost.getCurrentTabTag().equals("Translated text"))
+        { Log.w("main page analysed frag",obj.toString());
+            Log.w("tag for refresh","android:switcher:" + R.id.view_pager + ":" + viewPager.getCurrentItem());
+            TranslatedTextFrag translatedtext=(TranslatedTextFrag)obj.findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + viewPager.getCurrentItem());
+            Log.w("main page analysed frag",translatedtext.toString());
+           translatedtext.settextview();
+        }
     }
 
     @Override
@@ -139,17 +152,23 @@ public class MainPage extends AppCompatActivity implements ViewPager.OnPageChang
         }
 
 
-
-        Myfragmentpageradapter myfragmentpageradapter= new Myfragmentpageradapter(getSupportFragmentManager(),listFragments);
+        obj=getSupportFragmentManager();
+        myfragmentpageradapter= new Myfragmentpageradapter(getSupportFragmentManager(),listFragments);
         viewPager.setAdapter(myfragmentpageradapter);
         viewPager.addOnPageChangeListener(this);
     }
 
     @Override
     public void update() {
-        FragmentManager manager=getSupportFragmentManager();
-        AnalysedData analysis=(AnalysedData)manager.findFragmentByTag("Analysed Data");
+       // FragmentManager manager=getSupportFragmentManager();
+        AnalysedData analysis=(AnalysedData)getSupportFragmentManager().findFragmentByTag("Analysed Data");
         analysis.setwebview();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.w("main page","on save instance");
     }
 
     public  class FakeContent implements TabHost.TabContentFactory

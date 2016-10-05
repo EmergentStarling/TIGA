@@ -20,6 +20,8 @@ import android.widget.Toast;
 
 import com.example.sigmaway.homeimage.R;
 
+
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +41,10 @@ public class AddHome extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_add_home);
         this.setTitle("Home");
+        Log.wtf("home","called");
         HomeList = new ArrayList<String>();
         ROOT_DIRECTORY_NAME = "Sigmaway";
         mediaStorageDir = new File(Environment.getExternalStorageDirectory(), ROOT_DIRECTORY_NAME);
@@ -116,7 +120,7 @@ public class AddHome extends AppCompatActivity {
             } else {
 
                 Log.v(TAG, "Permission is revoked");
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.CAMERA},1 );
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.CAMERA,Manifest.permission.READ_LOGS},1 );
 //                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 2);
 //                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 3);
                 //  return false;
@@ -131,6 +135,7 @@ public class AddHome extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        Log.w("addhome","onrequestpermission");
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1) {
             if (permissions[0] == Manifest.permission.WRITE_EXTERNAL_STORAGE) {
@@ -139,7 +144,8 @@ public class AddHome extends AppCompatActivity {
                     //resume tasks needing this permission
                     // Create the storage directory if it does not exist
                     if (!mediaStorageDir.exists()) {
-                        if (!mediaStorageDir.mkdirs()) {
+                        if (!mediaStorageDir.mkdirs())
+                        {
                             Log.d(ROOT_DIRECTORY_NAME, "Oops! Failed create " + ROOT_DIRECTORY_NAME + " directory");
                         }
                         File[] fList = mediaStorageDir.listFiles();
@@ -152,10 +158,11 @@ public class AddHome extends AppCompatActivity {
                         }
                     }
                 }
-            } else {
-                Toast.makeText(getApplicationContext(), "cannot create and access directory", Toast.LENGTH_SHORT).show();
+                else {
+                    Toast.makeText(getApplicationContext(), "cannot create and access directory", Toast.LENGTH_SHORT).show();
+                }
             }
-            if (permissions[1]==Manifest.permission.CAMERA)
+           else  if (permissions[1]==Manifest.permission.CAMERA)
             {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
@@ -168,6 +175,9 @@ public class AddHome extends AppCompatActivity {
             }
 
         }
+
+
+
 
 
 
