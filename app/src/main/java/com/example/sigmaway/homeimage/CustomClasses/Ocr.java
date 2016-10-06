@@ -25,7 +25,7 @@ import static com.googlecode.tesseract.android.TessBaseAPI.OEM_DEFAULT;
 public class Ocr {
     String TAG= "OCR";
     String DATA_PATH = Environment.getExternalStorageDirectory().toString() + "/Sigmaway/";
-    String[] language={"eng","ara","urd"};
+    String[] language={"eng.traineddata","ara.cube.bigrams","ara.cube.fold","ara.cube.lm","ara.cube.nn","ara.cube.params","ara.cube.size","ara.cube.word-freq","ara.traineddata"};
     Context c;
     ArrayList<Rect> Pics=new ArrayList<Rect>();
     public void Ocr(Context context){
@@ -49,14 +49,14 @@ public class Ocr {
         for (String lang:language)
         {   Log.v(TAG, "hey c");
 
-            if (!(new File(DATA_PATH + "tessdata/" + lang + ".traineddata")).exists()) {
+            if (!(new File(DATA_PATH + "tessdata/" + lang )).exists()) {
                 try {
 
                     AssetManager assetManager = c.getAssets();
-                    InputStream in = assetManager.open("tessdata/" + lang + ".traineddata");
+                    InputStream in = assetManager.open("tessdata/" + lang );
                     //GZIPInputStream gin = new GZIPInputStream(in);
                     OutputStream out = new FileOutputStream(DATA_PATH
-                            + "tessdata/" + lang + ".traineddata");
+                            + "tessdata/" + lang);
 
                     // Transfer bytes from in to out
                     byte[] buf = new byte[1024];
@@ -108,6 +108,4 @@ public class Ocr {
      return recognizedText;
 
     }
-
-
 }

@@ -113,25 +113,6 @@ public class DirectDocument extends AppCompatActivity {
         Picture_URI = new ArrayList<Uri>();
         Picture_Name = new ArrayList<String>();
         gridviewid = 0.1;
-        if (Build.VERSION.SDK_INT < 23)
-        {
-            File mediaStorageDir = new File(Environment.getExternalStorageDirectory(), "Sigmaway/" + "Documents");
-            final File[] fList = mediaStorageDir.listFiles();
-            if (!(fList == null)) {
-                for (File file : fList) {
-                    String fileURI = file.getPath();
-                    if (fileURI.endsWith(".jpg")) {
-                        String[] name = file.getName().split("_");
-                        Picture_Name.add(name[name.length - 3]);
-                        Picture_URI.add(Uri.parse(file.getAbsolutePath()));
-                        wall_gridView.invalidateViews();
-                    }
-                }
-            }
-        }
-        else{
-            StoragePermissionGranted1();
-        }
 
        //this.requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.directdocument);
@@ -283,6 +264,26 @@ public class DirectDocument extends AppCompatActivity {
        final GridViewAdapter wall_gridview_adapter = new GridViewAdapter(getApplicationContext(), Picture_URI, Picture_Name);
         wall_gridView.setAdapter(wall_gridview_adapter);
         wall_gridView.setChoiceMode(GridView.CHOICE_MODE_SINGLE);
+        if (Build.VERSION.SDK_INT < 23)
+        {
+            captureImage();
+            File mediaStorageDir = new File(Environment.getExternalStorageDirectory(), "Sigmaway/" + "Documents");
+            final File[] fList = mediaStorageDir.listFiles();
+            if (!(fList == null)) {
+                for (File file : fList) {
+                    String fileURI = file.getPath();
+                    if (fileURI.endsWith(".jpg")) {
+                        String[] name = file.getName().split("_");
+                        Picture_Name.add(name[name.length - 3]);
+                        Picture_URI.add(Uri.parse(file.getAbsolutePath()));
+                        wall_gridView.invalidateViews();
+                    }
+                }
+            }
+        }
+        else{
+            StoragePermissionGranted1();
+        }
 
         wall_gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -460,6 +461,7 @@ public class DirectDocument extends AppCompatActivity {
             Ocr OcrObj = new Ocr();
             dataBaseAdapter =new DataBaseAdapter(DirectDocument.this);
             String value =dataBaseAdapter.getvalue("text",tempuifile.getName());
+            Log.wtf("direct doc text check",value.toString());
             if (value.equals("NULL"))
             {
                 String JustFinal =  tempuifile.getName().substring(0,tempuifile.getName().lastIndexOf('.'));
