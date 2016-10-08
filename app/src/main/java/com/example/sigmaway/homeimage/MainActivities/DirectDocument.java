@@ -15,11 +15,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -49,7 +49,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class DirectDocument extends AppCompatActivity {
+public class DirectDocument extends NavigationBarActivity {
     public static final int MEDIA_TYPE_IMAGE = 1;
     // Activity request codes
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
@@ -74,7 +74,7 @@ public class DirectDocument extends AppCompatActivity {
     String TAG = "Direct Documents";
     String[] lang_list={"Select Language","English","Arabic"};
     SharedPreferences sharedPref;
-
+    Toolbar toolbar;
     BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
         public void onManagerConnected(int status) {
@@ -102,12 +102,19 @@ public class DirectDocument extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.activity_navigation_bar);
+       super.onCreateDrawer(savedInstanceState);
         /*if (!OpenCVLoader.initDebug()) {
             Log.e(TAG, "Cannot connect to OpenCV Manager");
         } else {
             mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
         }*/
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        View yourListView = findViewById(R.id.content_navigation_bar);
+        ViewGroup parent = (ViewGroup) yourListView.getParent();
+        parent.removeView(yourListView);
+        View view=getLayoutInflater().inflate(R.layout.directdocument,parent,false);
+        parent.addView(view);
         sharedPref = getApplication().getSharedPreferences("shrdpref", MODE_PRIVATE);
 
         Picture_URI = new ArrayList<Uri>();
@@ -115,7 +122,9 @@ public class DirectDocument extends AppCompatActivity {
         gridviewid = 0.1;
 
        //this.requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-        setContentView(R.layout.directdocument);
+
+       /* toolbar= (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);*/
 
       // this.getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.titlebar);
         /*setTitle("TIGA");*/

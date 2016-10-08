@@ -3,4 +3,10 @@
     <string name="title_activity_image_display">ImageDisplay</string>
     <string name="title_activity_direct_document">DirectDocument</string>
     <string name="Key_Word">Army of the Guardians of the Islamic Revolution,Islamic Revolutionary Guard Corps,IRGC,Pasdaran,Revolutionary Guards,Sepah,Iran,Sarin,Bomb,</string>
+    <string name="title_activity_navigation_bar">NavigationBarActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
 </resources>
