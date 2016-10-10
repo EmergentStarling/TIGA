@@ -127,8 +127,8 @@ public class DirectDocument extends NavigationBarActivity {
         setSupportActionBar(toolbar);*/
 
       // this.getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.titlebar);
-        /*setTitle("TIGA");*/
-      //  getActionBar().setIcon(R.mipmap.ic_tig_xxxhdpi640);
+        setTitle("");
+
         Log.wtf("Oncreate"," Hi");
         OcrLanguageSelector= (Spinner) findViewById(R.id.ocr_language);
         ArrayAdapter Spinner_Adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item,lang_list);
@@ -275,7 +275,7 @@ public class DirectDocument extends NavigationBarActivity {
         wall_gridView.setChoiceMode(GridView.CHOICE_MODE_SINGLE);
         if (Build.VERSION.SDK_INT < 23)
         {
-            captureImage();
+            //captureImage();
             File mediaStorageDir = new File(Environment.getExternalStorageDirectory(), "Sigmaway/" + "Documents");
             final File[] fList = mediaStorageDir.listFiles();
             if (!(fList == null)) {
@@ -384,7 +384,7 @@ public class DirectDocument extends NavigationBarActivity {
                     Toast.makeText(getApplicationContext(),"data not inserted", Toast.LENGTH_SHORT).show();
                 else if (id>=1)
                     Toast.makeText(getApplicationContext(),"database inserted", Toast.LENGTH_SHORT).show();
-                captureImage();
+           //     captureImage();
 
 
                 // successfully captured the image
@@ -577,11 +577,7 @@ public class DirectDocument extends NavigationBarActivity {
                 }*/
 
                 return null;
-
-
-
         }
-
         @Override
         protected void onPostExecute(Void aVoid) {
             TempUri=null;
@@ -611,10 +607,9 @@ public class DirectDocument extends NavigationBarActivity {
                             }
                     }
                 }
-                captureImage();
+          //      captureImage();
                 //    return true;
             } else {
-
                 Log.v(TAG, "Permission is revoked");
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.CAMERA,Manifest.permission.READ_LOGS},1 );
 //                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 2);
@@ -625,8 +620,6 @@ public class DirectDocument extends NavigationBarActivity {
             Log.v(TAG, "Permission is granted");
             //return true;
         }
-
-
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -668,7 +661,7 @@ public class DirectDocument extends NavigationBarActivity {
 
 
                     Log.v(TAG, "Permission: " + permissions[0] + "was " + grantResults[0]);
-                    captureImage();
+              //      captureImage();
                     Toast.makeText(getApplicationContext(), "Camera Permission Granted", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "Camera Permission Not Granted", Toast.LENGTH_SHORT).show();

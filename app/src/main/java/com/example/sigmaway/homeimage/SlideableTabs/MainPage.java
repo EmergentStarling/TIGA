@@ -8,21 +8,26 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.Switch;
 import android.widget.TabHost;
+import android.widget.Toast;
 
 import com.example.sigmaway.homeimage.CustomClasses.Communicator;
 import com.example.sigmaway.homeimage.CustomClasses.Ocr;
+import com.example.sigmaway.homeimage.MainActivities.DirectDocument;
+import com.example.sigmaway.homeimage.MainActivities.NavigationBarActivity;
 import com.example.sigmaway.homeimage.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainPage extends AppCompatActivity implements ViewPager.OnPageChangeListener,TabHost.OnTabChangeListener,Communicator {
+public class MainPage extends NavigationBarActivity implements ViewPager.OnPageChangeListener,TabHost.OnTabChangeListener,Communicator {
     public ViewPager viewPager;
     TabHost tabHost;
     String TAG= "in main";
@@ -37,7 +42,20 @@ public class MainPage extends AppCompatActivity implements ViewPager.OnPageChang
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.swipeable_fragment);
+        setContentView(R.layout.activity_navigation_bar);
+        super.onCreateDrawer(savedInstanceState);
+        /*if (!OpenCVLoader.initDebug()) {
+            Log.e(TAG, "Cannot connect to OpenCV Manager");
+        } else {
+            mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
+        }*/
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        View yourListView = findViewById(R.id.content_navigation_bar);
+        ViewGroup parent = (ViewGroup) yourListView.getParent();
+        parent.removeView(yourListView);
+        View view=getLayoutInflater().inflate(R.layout.swipeable_fragment,parent,false);
+        parent.addView(view);
+        setTitle("");
         getintent=getIntent();
         language=getintent.getStringExtra("language");
         Log.i(TAG, "1");
@@ -185,5 +203,9 @@ public class MainPage extends AppCompatActivity implements ViewPager.OnPageChang
             return fakeView;
         }
     }
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(MainPage.this,DirectDocument.class));
+    }
 }

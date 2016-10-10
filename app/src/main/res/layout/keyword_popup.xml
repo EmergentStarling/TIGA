@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/KeyWord_popup"
+        android:layout_width="fill_parent"
+        android:layout_height="40.0dip"
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/Popup_KeyWord"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:hint="Enter Key Word Here"
+            android:inputType="text"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+             />
+
+        <Button
+            android:id="@+id/Popup_KeyWordAdd_btn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:background="@color/OliveGreen"
+
+            android:singleLine="true"
+            android:text="ADD"
+            android:textAllCaps="true" />
+    </LinearLayout>
+</LinearLayout>
+

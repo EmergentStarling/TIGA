@@ -1,6 +1,7 @@
 package com.example.sigmaway.homeimage.MainActivities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.design.widget.FloatingActionButton;
@@ -26,6 +27,11 @@ public DrawerLayout drawer;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        toolbar.setLogo(R.drawable.ic_tig_mdpi160_40x40);
+
+
+    //    toolbar.setNavigationIcon(R.drawable.ic_tig_xxxhdpi640);
+        //     getSupportActionBar().setIcon(R.drawable.ic_tig_xxxhdpi640);
     /*    FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +63,7 @@ public DrawerLayout drawer;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+
         getMenuInflater().inflate(R.menu.navigation_bar, menu);
         return true;
     }
@@ -84,16 +91,10 @@ public DrawerLayout drawer;
 
         if (id == R.id.nav_camera) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+            startActivity(new Intent(NavigationBarActivity.this,New_Camera.class));
+        }
+        else if (id == R.id.nav_slideshow) {
+            startActivity(new Intent(NavigationBarActivity.this,DirectDocument.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
