@@ -42,6 +42,8 @@ public class New_Camera extends AppCompatActivity {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.CAMERA,Manifest.permission.READ_LOGS},1 );
             }
         }
+        else if (Build.VERSION.SDK_INT < 23)
+            captureImage();
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -101,7 +103,6 @@ public class New_Camera extends AppCompatActivity {
         else
         {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.CAMERA,Manifest.permission.READ_LOGS},1 );
-
         }
 
     }

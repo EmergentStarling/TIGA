@@ -29,7 +29,7 @@ public class ImageDisplayFragment extends Fragment {
     {
         View v = inflater.inflate(R.layout.fragment_image_display,container, false);
         ImgView= (ImageView) v.findViewById(R.id.FragmentImageView);
-        ImgName= (TextView) v.findViewById(R.id.FragImageName);
+        //ImgName= (TextView) v.findViewById(R.id.FragImageName);
 
         sharedPref = getActivity().getSharedPreferences("shrdpref",Context.MODE_PRIVATE);
         ImageUri = Uri.parse(sharedPref.getString("ImgUri", "no name"));
@@ -41,8 +41,8 @@ public class ImageDisplayFragment extends Fragment {
                     .into(ImgView);
 //            ImgView.setImageURI(ImageUri);
             File file=new File(String.valueOf(ImageUri));
-            ImgName.setHorizontallyScrolling(true);
-            ImgName.setText(file.getName());
+           /* ImgName.setHorizontallyScrolling(true);
+            ImgName.setText(file.getName());*/
         }
         catch (Exception e)
         {

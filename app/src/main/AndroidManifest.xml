@@ -43,7 +43,7 @@
         <activity android:name=".SlideableTabs.MainPage" />
         <activity
             android:name=".MainActivities.DirectDocument"
-            android:windowSoftInputMode="adjustPan"></activity>
+            ></activity>
         <activity
             android:name=".MainActivities.NavigationBarActivity"
             android:label="@string/title_activity_navigation_bar"

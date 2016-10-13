@@ -20,6 +20,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -149,12 +150,12 @@ public class DirectDocument extends NavigationBarActivity {
                 try {
                     if (gridviewid == 0.1) {
                         Log.wtf("gridview", String.valueOf(gridviewid));
-                        Toast.makeText(getApplicationContext(), "select the image first", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Select Image First", Toast.LENGTH_LONG).show();
                     } else {
 
                         if (SpinnerPosition==0)
                         {
-                            Toast.makeText(getApplicationContext(), "select the language first", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Select language", Toast.LENGTH_LONG).show();
 
                         }
                         else
@@ -207,10 +208,17 @@ public class DirectDocument extends NavigationBarActivity {
                     KeyWord.setVisibility(View.VISIBLE);
                     click.setVisibility(View.GONE);
                     Click=true;
-                }
+
+
+                    }
 
                 else {
 
+                    View view = DirectDocument.this.getCurrentFocus();
+                    if (view != null) {
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                    }
                     String KeyWords = KeyWord.getText().toString();
                     //      JSONObject ImageName = new JSONObject();
                     //    JSONObject ImageData = new JSONObject();
@@ -218,7 +226,7 @@ public class DirectDocument extends NavigationBarActivity {
                     try {
                         if (gridviewid == 0.1) {
                             Log.wtf("gridview", String.valueOf(gridviewid));
-                            Toast.makeText(getApplicationContext(), "select the image first", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Select Image First", Toast.LENGTH_LONG).show();
                         } else {
                             File imagename = new File(String.valueOf(Picture_URI.get((int) gridviewid)));
                             String justimagename = imagename.getName();
@@ -241,6 +249,8 @@ public class DirectDocument extends NavigationBarActivity {
                             }
                             File keywordfile = new File(Environment.getExternalStorageDirectory(), IMAGE_DIRECTORY_NAME + "Documents" + File.separator + JustFinal + ".key");
 
+
+                            KeyWord.setText("");
                      /*       if (keywordfile.exists()) {
                                 FileOutputStream fOut = new FileOutputStream(keywordfile, true);
                                 OutputStreamWriter file = new OutputStreamWriter(fOut);

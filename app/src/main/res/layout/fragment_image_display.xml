@@ -8,8 +8,10 @@
         android:id="@+id/FragmentImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="9dp"
+        android:scaleType="fitXY"
         android:layout_weight="1"/>
-
+<!--
     <TextView
         android:id="@+id/FragImageName"
         android:layout_width="match_parent"
@@ -17,5 +19,5 @@
         android:layout_margin="10dp"
         android:background="@color/tan"
         android:scrollbars="horizontal"
-        android:singleLine="true"/>
+        android:singleLine="true"/>-->
 </LinearLayout>

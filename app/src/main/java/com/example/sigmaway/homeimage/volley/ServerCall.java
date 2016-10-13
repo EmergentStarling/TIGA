@@ -41,7 +41,8 @@ public class ServerCall {
 
         RequestQueue requestQueue = Volley.newRequestQueue(c);
         Log.wtf("volley","1");
-        String url= "http://gosigmaway.com:8085/RAWS/process/armyService?imageName="+file.getName();
+      //String url="http://gosigmaway.com:8085/RAWS/resources/home/admin/reportGourav/index.html";
+        String url= "http://gosigmaway.com:8085/RAWS/process/tiga?imageName="+file.getName();
         StringRequest stringRequest=new StringRequest(url, new Response.Listener<String>() {
 
             @Override
@@ -55,6 +56,8 @@ public class ServerCall {
                     Log.wtf("Analysed data not updated", String.valueOf(id));
                     /*MainPage obj=new MainPage();
                     obj.changepage();*/
+                   imgrequest img= new imgrequest();
+                    img.imgrequest(c);
                     progressDialog.dismiss();
                 }
 
@@ -64,6 +67,8 @@ public class ServerCall {
                     obj.changepage();*/
                /*     MainPage obj=new MainPage();
                     obj.analysedchanger();*/
+                    imgrequest img= new imgrequest();
+                    img.imgrequest(c);
                     progressDialog.dismiss();
 
                 }

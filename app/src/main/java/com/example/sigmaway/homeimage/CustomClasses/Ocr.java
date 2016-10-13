@@ -92,13 +92,14 @@ public class Ocr {
       baseApi.init(DATA_PATH,lang,OEM_CUBE_ONLY);
      Log.v(TAG, "Ctesseract 4" );
        baseApi.setImage(bmpImg);
-     Log.v(TAG, "Ctesseract 5  "  );
+     Log.v(TAG, "Ctesseract 5"  );
        String recognizedText = baseApi.getUTF8Text();
      Log.v(TAG, "Ctesseract 6" );
        baseApi.end();
        if ( lang.equalsIgnoreCase("eng") )
      {
          recognizedText = recognizedText.replaceAll("[^a-zA-Z0-9\\p{Punct}\\p{Space}]+", " ");
+
      }
    /*  if ( lang.equalsIgnoreCase("ara") )
      {

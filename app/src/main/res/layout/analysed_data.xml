@@ -18,11 +18,11 @@
         android:scrollbars="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></WebView>
-<!--<Button
-    android:id="@+id/RefreshButton"
+<Button
+    android:id="@+id/analysed_Details"
     android:layout_width="match_parent"
     android:layout_height="50dp"
-
-    android:text="View/Refresh Results"
-    />-->
+    android:background="@color/OliveGreen"
+    android:text="Detailed Analysis"
+    />
 </LinearLayout>

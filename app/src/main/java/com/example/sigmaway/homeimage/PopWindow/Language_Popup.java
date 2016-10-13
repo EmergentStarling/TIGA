@@ -200,8 +200,9 @@ public class Language_Popup extends AppCompatActivity {
 
 
                     String OcrText = OcrObj.tesseract(c, bmp,lang);
-
-                    Log.i("OCr text from Document", OcrText );
+                Log.i("OCr text from Document", OcrText );
+          /*   String OcrText1= OcrText.replace("\"","heloooooo");
+              Log.i("OCr text from Document", OcrText1 );*/
                     long id=dataBaseAdapter.updatedata(tempuifile.getName(),"text",OcrText);
                     if (id==0)
                         Log.wtf("data not updated", String.valueOf(id));
@@ -300,7 +301,7 @@ public class Language_Popup extends AppCompatActivity {
                 String result= obj.VolleySend(activity,info);
                 ImageDetails.putExtra("language",lang_list[SpinnerPosition]);
                 startActivity(ImageDetails);
-                finish();
+
             }
             if (SpinnerPosition==2)
             {
@@ -417,7 +418,7 @@ public class Language_Popup extends AppCompatActivity {
             ImageDetails.putExtra("language",lang_list[SpinnerPosition]);
             startActivity(ImageDetails);
             progress.dismiss();
-            finish();
+
         }
     }
     @Override
