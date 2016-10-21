@@ -17,6 +17,8 @@ import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,8 +26,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.MultiAutoCompleteTextView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -59,16 +61,19 @@ public class DirectDocument extends NavigationBarActivity {
     List<Uri> Picture_URI;
     Uri fileUri;
     Button click;
+    String[] temp;
     GridView wall_gridView;
     boolean flag = true;
+    ArrayAdapter<String> adapter;
     double gridviewid;
     String TempUri;
     int SpinnerPosition = 0;
+    List<String> All_KeyWords;
     Button ocrLanguageBtn;
     Context c;
     String lang;
     Spinner OcrLanguageSelector;
-    EditText KeyWord;
+    MultiAutoCompleteTextView KeyWord;
     Button KeyWord_AddBtn;
     DataBaseAdapter dataBaseAdapter;
     Intent ImageDetails;
@@ -194,7 +199,74 @@ public class DirectDocument extends NavigationBarActivity {
             }
         });
         //Edit Text - key word
-        KeyWord = (EditText) findViewById(R.id.KeyWord);
+        KeyWord = (MultiAutoCompleteTextView) findViewById(R.id.KeyWord);
+        KeyWord.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+
+        KeyWord.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                try{
+                   if (s.length()>0){
+                       if (s.toString().substring(s.length()-1).equals(","))
+                       {
+                          // KeyWord.showDropDown();
+                           String[] key=s.toString().split(",");
+
+                           try{
+                               if (All_KeyWords.get(0).contains(key[key.length -1]))
+                                   Toast.makeText(getApplicationContext()," Last Key Word Already Exists",Toast.LENGTH_LONG).show();
+                           }
+                           catch (Exception e)
+                           {
+                               e.printStackTrace();
+                           }
+
+                       }
+                   }
+
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+        KeyWord.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.wtf("direct doc ","onitemclick");
+                String selected=(String) parent.getAdapter().getItem(position);
+                Log.wtf("direct doc ", (String) parent.getAdapter().getItem(position));
+
+                if (All_KeyWords.get(0).contains(selected))
+                    Toast.makeText(getApplicationContext(),"Key Word Already Exists",Toast.LENGTH_LONG).show();
+            }
+        });
+   /*     KeyWord.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.wtf("direct doc ","onitemselect");
+               Log.wtf("direct doc tag",view.getTag().toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                Log.wtf("direct doc ","onitemselect");
+            }
+        });*/
         //
         //Key Word btn
         KeyWord_AddBtn = (Button) findViewById(R.id.KeyWordAdd_btn);
@@ -203,23 +275,22 @@ public class DirectDocument extends NavigationBarActivity {
             @Override
             public void onClick(View v) {
 
-                if (!Click) {
+                if (!Click)
+                {
                     KeyWord_AddBtn.setText("Add");
                     KeyWord.setVisibility(View.VISIBLE);
                     click.setVisibility(View.GONE);
                     Click=true;
-
-
-                    }
-
+                }
                 else {
 
                     View view = DirectDocument.this.getCurrentFocus();
-                    if (view != null) {
+                    if (view != null)
+                    {
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                     }
-                    String KeyWords = KeyWord.getText().toString();
+                    String KeyWords=null ;
                     //      JSONObject ImageName = new JSONObject();
                     //    JSONObject ImageData = new JSONObject();
 
@@ -233,8 +304,32 @@ public class DirectDocument extends NavigationBarActivity {
                             String justfinal = justimagename.replace("%20", " ");
                             String JustFinal = justfinal.substring(0, justfinal.lastIndexOf('.'));
                             Log.wtf("here", justfinal);
-                            //    ImageData.put("keywords", KeyWords);
+                            //    ImageData.put("keywords", All_KeyWords);
                             //  ImageName.put(justfinal, ImageData);
+
+                          //  File keywordfile = new File(Environment.getExternalStorageDirectory(), IMAGE_DIRECTORY_NAME + "Documents" + File.separator + JustFinal + ".key");
+
+                            String[] keyword=KeyWord.getText().toString().split(",");
+                            String RedundantKey = null;
+                            for (String key:keyword) {
+                                if (All_KeyWords.get(0).contains(key))
+                                {
+                                    if (RedundantKey==null)
+                                        RedundantKey =key;
+                                    else
+                                        RedundantKey += ","+key;
+                                }
+                                else
+                                {
+                                    if (KeyWords==null)
+                                        KeyWords=key;
+                                    else
+                                        KeyWords+="," +key;
+                                    Log.wtf("direct doc new keywords",KeyWords);
+                                }
+                            }
+                            if (RedundantKey!=null)
+                                Toast.makeText(getApplicationContext(),RedundantKey +" Already Exists",Toast.LENGTH_LONG).show();
                             dataBaseAdapter =new DataBaseAdapter(DirectDocument.this);
                             String value =dataBaseAdapter.getvalue("key",justimagename);
                             if (value.equals("NULL"))
@@ -247,20 +342,18 @@ public class DirectDocument extends NavigationBarActivity {
                                 long id=dataBaseAdapter.updatedata(justimagename,"key",value+","+KeyWords);
                                 Log.wtf("key else id ", String.valueOf(id));
                             }
-                            File keywordfile = new File(Environment.getExternalStorageDirectory(), IMAGE_DIRECTORY_NAME + "Documents" + File.separator + JustFinal + ".key");
-
 
                             KeyWord.setText("");
                      /*       if (keywordfile.exists()) {
                                 FileOutputStream fOut = new FileOutputStream(keywordfile, true);
                                 OutputStreamWriter file = new OutputStreamWriter(fOut);
-                                file.append("," + KeyWords);
+                                file.append("," + All_KeyWords);
                                 //  file.flush();
                                 file.close();
                                 Toast.makeText(getApplicationContext(), "KEY STORED", Toast.LENGTH_SHORT).show();
                             } else {
                                 FileWriter file = new FileWriter(keywordfile);
-                                file.write(KeyWords);
+                                file.write(All_KeyWords);
                                 file.flush();
                                 file.close();
                                 Toast.makeText(getApplicationContext(), "KEY STORED", Toast.LENGTH_SHORT).show();
@@ -320,6 +413,14 @@ public class DirectDocument extends NavigationBarActivity {
                         editor.putString("ImgUri", TempUri);
                         editor.apply();
                         view.setActivated(true);
+
+                        dataBaseAdapter =new DataBaseAdapter(DirectDocument.this);
+                        All_KeyWords =dataBaseAdapter.GetKeys(new File(TempUri).getName());
+                        temp= All_KeyWords.get(1).split(",");
+
+                        adapter = new ArrayAdapter<String>(DirectDocument.this,android.R.layout.simple_dropdown_item_1line,temp );
+                        KeyWord.setAdapter(adapter);
+
                     } else {
                         Log.wtf("in else if", "" + flag);
 
@@ -338,6 +439,13 @@ public class DirectDocument extends NavigationBarActivity {
                     editor.putString("ImgUri", TempUri);
                     editor.apply();
                     gridviewid = id;
+
+                    dataBaseAdapter =new DataBaseAdapter(DirectDocument.this);
+                    All_KeyWords =dataBaseAdapter.GetKeys(new File(TempUri).getName());
+                    temp= All_KeyWords.get(1).split(",");
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(DirectDocument.this,android.R.layout.simple_dropdown_item_1line,temp );
+                    KeyWord.setAdapter(adapter);
+
                 }
             }
         });

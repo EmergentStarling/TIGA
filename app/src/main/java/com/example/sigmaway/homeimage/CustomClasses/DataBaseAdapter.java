@@ -18,6 +18,76 @@ public class DataBaseAdapter{
     public DataBaseAdapter(Context context){
         dataBase=new DataBase(context);
     }
+    public List<String> GetKeys(String img_name)
+    {
+        SQLiteDatabase db= dataBase.getWritableDatabase();
+        //select key from table_name where imagename is img_name
+        List<String> value=new ArrayList<String>();
+        String[] column ={DataBase.ImageKey};
+        Cursor cursor=db.query(DataBase.Table_Name,column,DataBase.ImageName+" = '"+img_name+"'",null,null,null,null);
+        Cursor cursor1=db.query(DataBase.Table_Name,column,null,null,null,null,null);
+        Log.wtf("cursor ", String.valueOf(cursor.getCount()));
+        String string=new String();
+        while(cursor.moveToNext())
+        {
+            Log.wtf("cursor ","1");
+            int key_index=cursor.getColumnIndex(DataBase.ImageKey);
+            value.add(cursor.getString(key_index));
+            Log.wtf("value 0 ", value.get(0));
+        }
+        while(cursor1.moveToNext())
+        {
+
+            Log.wtf("cursor 1 ","1");
+            int key_index=cursor1.getColumnIndex(DataBase.ImageKey);
+            string +=","+cursor1.getString(key_index);
+
+        }
+        //value.add(string);// just to prevent null exception for now
+        Log.wtf("database adapter string",string);
+        if (string!=null)
+        {
+            String[] str=string.split(",");
+            String finalString="NULL";
+            for(String subString :str)
+            {
+                Log.wtf("database adapter","here 1");
+                Log.wtf("database adapter",subString.toString());
+
+                int ind;
+                for(int i=0; i<finalString.length(); i++)
+                {
+                    ind=finalString.indexOf(subString,i);
+                    if(ind>=0)
+                    {
+                        Log.wtf("database adapter if ind", String.valueOf(ind));
+                        i=finalString.length();
+                    }
+                   else if (ind==-1)
+                    {
+                        Log.wtf("database adapter else ind", String.valueOf(ind));
+                        if (value.size()==1)
+                        {
+                            Log.wtf("database adapter else ind", "1");
+                            finalString = finalString+","+subString;
+                            i=finalString.length();
+                            value.add(1,subString);
+                        }
+                        else if (value.size()>=2)
+                        {
+                            Log.wtf("database adapter else ind", "2 " );
+                            finalString = finalString+subString;
+                            i=finalString.length();
+                            value.add(1, value.get(1) + "," + subString);
+
+                        }
+                    }
+                }
+            }
+        }
+        Log.wtf("database check value",value.get(1));
+        return value;
+    }
     public String GetAnalysedText(String img_name)
     {
         SQLiteDatabase db= dataBase.getWritableDatabase();
@@ -25,6 +95,7 @@ public class DataBaseAdapter{
         String value=null;
         String[] column ={DataBase.AnalysedData};
         Cursor cursor=db.query(DataBase.Table_Name,column,DataBase.ImageName+" = '"+img_name+"'",null,null,null,null);
+
         Log.wtf("cursor ", String.valueOf(cursor.getCount()));
         while(cursor.moveToNext())
         {
@@ -32,6 +103,7 @@ public class DataBaseAdapter{
             int text_index=cursor.getColumnIndex(DataBase.AnalysedData);
             value=cursor.getString(text_index);
         }
+        cursor.close();
         return value;
     }
     public String GetTranslatedText(String img_name,String lang)

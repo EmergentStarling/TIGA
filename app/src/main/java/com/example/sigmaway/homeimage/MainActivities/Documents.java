@@ -160,7 +160,7 @@ public class Documents extends AppCompatActivity implements AdapterView.OnItemSe
                         String justfinal = justimagename.replace("%20", " ");
                         String JustFinal =  justfinal.substring(0,justfinal.lastIndexOf('.'));
                         Log.wtf("here", justfinal);
-                        //    ImageData.put("keywords", KeyWords);
+                        //    ImageData.put("keywords", All_KeyWords);
                         //  ImageName.put(justfinal, ImageData);
 
                         File keywordfile = new File(Environment.getExternalStorageDirectory(), IMAGE_DIRECTORY_NAME + File.separator + HomeName + File.separator + Room_Selected + File.separator + "Documents" + File.separator + JustFinal + ".key");
