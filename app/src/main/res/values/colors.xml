@@ -3,6 +3,7 @@
     <color name="colorPrimary">#D2B48C</color>
     <color name="colorPrimaryDark">#caad85</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="OliveGreen">#4b5320</color>
+    <color name="OliveGreen">#535c23</color>
+    <color name="OliveLightGreen">#6a762a</color>
     <color name="tan"> #D2B48C</color>
 </resources>

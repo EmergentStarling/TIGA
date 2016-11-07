@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.sigmaway.homeimage">
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-feature android:name="android.hardware.camera" />
@@ -16,6 +18,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_tig_xxxhdpi640"
         android:label="TIGA"
+        android:logo="@drawable/ic_tig_mdpi160_40x40"
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivities.AddHome"
@@ -41,26 +44,54 @@
             android:label="Rooms"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".SlideableTabs.MainPage" />
-        <activity
-            android:name=".MainActivities.DirectDocument"
-            ></activity>
+        <activity android:name=".MainActivities.DirectDocument" />
         <activity
             android:name=".MainActivities.NavigationBarActivity"
             android:label="@string/title_activity_navigation_bar"
             android:theme="@style/AppTheme" />
-        <activity android:name=".MainActivities.New_Camera">
+        <activity android:name=".MainActivities.New_Camera" />
+        <activity android:name=".MainActivities.New_Preview" />
+        <activity
+            android:name=".PopWindow.Keyword_Popup"
+            android:theme="@style/CustomTheme" />
+        <activity
+            android:name=".PopWindow.Language_Popup"
+            android:theme="@style/CustomTheme" />
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".MainActivities.MapsActivity"
+            android:label="@string/title_activity_maps">
+
+            <!--
+            <intent-filter>
+            <action android:name="android.intent.action.VIEW" />
+            <action android:name="android.intent.action.PICK" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <data android:mimeType="image/*" />
+        </intent-filter>
+            -->
+        </activity>
+        <activity
+            android:name=".MainActivities.HomeScreen"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivities.New_Preview" />
-        <activity
-            android:name=".PopWindow.Keyword_Popup"
-            android:theme="@style/CustomTheme"></activity>
-        <activity android:name=".PopWindow.Language_Popup"
-            android:theme="@style/CustomTheme"></activity>
+        <activity android:name=".MainActivities.ImportImage"></activity>
     </application>
 
 </manifest>

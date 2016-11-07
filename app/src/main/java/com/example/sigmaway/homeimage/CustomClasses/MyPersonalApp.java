@@ -1,8 +1,11 @@
 package com.example.sigmaway.homeimage.CustomClasses;
 
 import android.app.Application;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
 import com.example.sigmaway.homeimage.MainActivities.DirectDocument;
@@ -16,7 +19,7 @@ import java.io.InputStreamReader;
  * Created by Family on 29-09-2016.
  */
 
-    public class MyPersonalApp extends Application{
+    public class MyPersonalApp extends MultiDexApplication{
 
         /**
          * Called when the application is starting, before any activity, service, or receiver objects (excluding content providers) have been created.

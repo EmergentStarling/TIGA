@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -27,7 +29,9 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.sigmaway.homeimage.CustomClasses.DataBaseAdapter;
 import com.example.sigmaway.homeimage.CustomClasses.ImageInfo;
+import com.example.sigmaway.homeimage.CustomClasses.LocationGetter;
 import com.example.sigmaway.homeimage.CustomClasses.Ocr;
+import com.example.sigmaway.homeimage.MainActivities.DirectDocument;
 import com.example.sigmaway.homeimage.R;
 import com.example.sigmaway.homeimage.SlideableTabs.MainPage;
 import com.example.sigmaway.homeimage.SlideableTabs.Ocrtext_ArabFrag;
@@ -100,7 +104,7 @@ public class Language_Popup extends AppCompatActivity {
         spinner.setAdapter(Spinner_Adapter);
         activity=this;
         file=new File(FileURI.toString());
-        dataBaseAdapter =new DataBaseAdapter(getApplicationContext());
+        dataBaseAdapter =new DataBaseAdapter(this);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -158,6 +162,7 @@ public class Language_Popup extends AppCompatActivity {
             progress = new ProgressDialog(Language_Popup.this);
             progress.setMessage("processing");
             progress.setCancelable(false);
+         //   progress.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             progress.setCanceledOnTouchOutside(false);
             progress.show();
             if (!OpenCVLoader.initDebug()) {
@@ -173,7 +178,7 @@ public class Language_Popup extends AppCompatActivity {
 
             File tempuifile = new File(TempUri);
             Ocr OcrObj = new Ocr();
-            dataBaseAdapter =new DataBaseAdapter(Language_Popup.this);
+
             String value =dataBaseAdapter.getvalue("text",tempuifile.getName());
             Log.wtf("direct doc text check",value.toString());
             if (value.equals("NULL"))
@@ -288,6 +293,7 @@ public class Language_Popup extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             TempUri=null;
+            progress.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
             progress.dismiss();
             if (SpinnerPosition==1)
@@ -419,11 +425,21 @@ public class Language_Popup extends AppCompatActivity {
             startActivity(ImageDetails);
             progress.dismiss();
 
+
+
         }
     }
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        Toast.makeText(getApplicationContext(),"Select Language First",Toast.LENGTH_LONG).show();
+
+        startActivity(new Intent(Language_Popup.this,DirectDocument.class));
+        finish();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        LocationGetter obj=new LocationGetter(this);
+        locationManager.removeUpdates(obj.locationListener);
     }
 }

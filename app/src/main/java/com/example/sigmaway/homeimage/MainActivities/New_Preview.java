@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.sigmaway.homeimage.CustomClasses.DataBaseAdapter;
 import com.example.sigmaway.homeimage.PopWindow.Keyword_Popup;
+import com.example.sigmaway.homeimage.PopWindow.Language_Popup;
 import com.example.sigmaway.homeimage.R;
 import com.squareup.picasso.Picasso;
 
@@ -35,6 +36,7 @@ public class New_Preview extends AppCompatActivity {
         FileURI = Uri.parse(sharedPref.getString("ImgUri", "no name"));
         Log.wtf("new preview",FileURI.toString());
 
+
     }
 
     @Override
@@ -47,38 +49,34 @@ public class New_Preview extends AppCompatActivity {
                 .load(new File(path))
                 .resize(1500,1500)
                 .into(BackgroundImage);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-            if (!(FileURI.equals(null)))
+        if (!(FileURI.equals(null)))
+        {
+            DataBaseAdapter dataBaseAdapter =new DataBaseAdapter(this);
+            String value =dataBaseAdapter.getvalue("key",(new File(FileURI.toString())).getName());
+            if (value.equals("NULL"))
             {
-               DataBaseAdapter dataBaseAdapter =new DataBaseAdapter(this);
-                String value =dataBaseAdapter.getvalue("key",(new File(FileURI.toString())).getName());
-                if (value.equals("NULL"))
-                {
-                    Intent Keywordpopup=new Intent(New_Preview.this,Keyword_Popup.class);
-                    startActivityForResult(Keywordpopup,1);
-
-                }
+                Intent Keywordpopup=new Intent(New_Preview.this,Keyword_Popup.class);
+                startActivity(Keywordpopup);
 
             }
+
+        }
     }
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        Toast.makeText(getApplicationContext(),"Enter Keyword First",Toast.LENGTH_LONG).show();
+
+        startActivity(new Intent(New_Preview.this,DirectDocument.class));
+
     }
 
-    @Override
+ /*   @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode==1)
         {
             Log.wtf("preview","pop closed");
         }
-    }
+    }*/
 }
 

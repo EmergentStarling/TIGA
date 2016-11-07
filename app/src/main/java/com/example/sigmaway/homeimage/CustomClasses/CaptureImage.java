@@ -11,6 +11,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import static android.R.attr.type;
+
 /**
  * Created by Family on 09-10-2016.
  */
@@ -23,6 +25,11 @@ public class CaptureImage {
     public Uri getOutputMediaFileUri(int type) {
         return Uri.fromFile(getOutputMediaFile(type));
     }
+    public String getOutputMediaFilepath()
+    {
+        return getOutputMediaFile(MEDIA_TYPE_IMAGE).getPath();
+    }
+
     private File getOutputMediaFile(int type) {
 
         // External sdcard location
@@ -39,7 +46,7 @@ public class CaptureImage {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
         File mediaFile;
         if (type == MEDIA_TYPE_IMAGE) {
-            mediaFile = new File(mediaStorageDir.getPath() + File.separator +  "Document_" + timeStamp + ".jpg");
+            mediaFile = new File(mediaStorageDir.getPath() + File.separator +timeStamp + ".jpg");
 
         } else {
             return null;

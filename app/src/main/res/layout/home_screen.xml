@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/home_screen"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.sigmaway.homeimage.MainActivities.HomeScreen">
+
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/Home_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            />
+
+    </android.support.design.widget.AppBarLayout>
+    <Button
+        android:text="New"
+        android:layout_width="300dp"
+        android:background="@drawable/shape"
+        android:layout_height="40dp"
+        android:layout_marginTop="230dp"
+        android:id="@+id/Home_New"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+    <Button
+        android:text="Import"
+        android:layout_width="300dp"
+        android:background="@drawable/shape"
+        android:layout_height="40dp"
+        android:layout_marginTop="12dp"
+        android:id="@+id/Home_Import"
+        android:layout_below="@+id/Home_New"
+        android:layout_alignStart="@+id/Home_New"/>
+    <Button
+        android:text="Previous"
+        android:background="@drawable/shape"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="12dp"
+        android:id="@+id/Home_Previous"
+        android:layout_below="@+id/Home_Import"
+        android:layout_alignStart="@+id/Home_New" />
+    <Button
+        android:text="Map View"
+        android:background="@drawable/shape"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="12dp"
+        android:id="@+id/home_Map"
+        android:layout_below="@+id/Home_Previous"
+        android:layout_alignStart="@+id/Home_New" />
+
+</RelativeLayout>

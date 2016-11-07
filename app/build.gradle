@@ -10,6 +10,10 @@ android {
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
+        dexOptions {
+            javaMaxHeapSize "2048M"
+        }
     }
     buildTypes {
         release {
@@ -21,16 +25,19 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    //compile files('libs/google-api-client-android-1.22.0.jar')
+    //compile files('libs/google-api-services-translate-v2-rev47-1.22.0.jar')
+    //compile 'com.google.api-client:google-api-client:1.22.0'
+    compile project(':openCVLibrary311')
+    compile 'com.android.support:multidex:1.0.0'
+
     compile 'junit:junit:4.12'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.mcxiaoke.volley:library-aar:1.0.0'
     compile 'com.rmtheis:tess-two:6.0.4'
     compile 'com.android.support:appcompat-v7:24.2.0'
     compile 'com.android.support:design:24.2.0'
-    //compile files('libs/google-api-client-android-1.22.0.jar')
-    //compile files('libs/google-api-services-translate-v2-rev47-1.22.0.jar')
-    //compile 'com.google.api-client:google-api-client:1.22.0'
     compile 'com.android.support:support-v4:24.2.0'
-    compile project(':openCVLibrary311')
+    compile 'com.google.android.gms:play-services:9.8.0'
 
 }

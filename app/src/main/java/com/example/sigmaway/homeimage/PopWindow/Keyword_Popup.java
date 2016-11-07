@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.sigmaway.homeimage.CustomClasses.DataBaseAdapter;
+import com.example.sigmaway.homeimage.CustomClasses.LocationGetter;
 import com.example.sigmaway.homeimage.MainActivities.New_Preview;
 import com.example.sigmaway.homeimage.R;
 
@@ -56,7 +58,14 @@ SharedPreferences sharedPref;
     }
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        Toast.makeText(getApplicationContext(),"Enter Keyword First",Toast.LENGTH_LONG).show();
+        startActivity(new Intent(Keyword_Popup.this,Language_Popup.class));
+        finish();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        LocationGetter obj=new LocationGetter(getApplicationContext());
+        locationManager.removeUpdates(obj.locationListener);
     }
 }

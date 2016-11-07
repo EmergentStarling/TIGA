@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.example.sigmaway.homeimage.CustomClasses.Communicator;
 import com.example.sigmaway.homeimage.CustomClasses.Ocr;
 import com.example.sigmaway.homeimage.MainActivities.DirectDocument;
+import com.example.sigmaway.homeimage.MainActivities.HomeScreen;
 import com.example.sigmaway.homeimage.MainActivities.NavigationBarActivity;
 import com.example.sigmaway.homeimage.R;
 
@@ -206,6 +207,6 @@ public class MainPage extends NavigationBarActivity implements ViewPager.OnPageC
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(MainPage.this,DirectDocument.class));
+        startActivity(new Intent(MainPage.this,HomeScreen.class));
     }
 }

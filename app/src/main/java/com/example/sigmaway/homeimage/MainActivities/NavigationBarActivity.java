@@ -12,15 +12,18 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+
 import com.example.sigmaway.homeimage.R;
 
 public class NavigationBarActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 public DrawerLayout drawer;
-
+Button header;
     protected void onCreateDrawer(Bundle savedInstanceState) {
     //    super.onCreate(Bundle bundle);
      //   setContentView(R.layout.activity_navigation_bar);
@@ -48,6 +51,17 @@ public DrawerLayout drawer;
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View v= navigationView.getHeaderView(0);
+        Log.wtf("navigationbar activity","header count"+ navigationView.getHeaderCount());
+        Log.wtf("navigationbar activity","view id : "+ v.getId()+"  "+v.getTag());
+       header= (Button) v.findViewById(R.id.imageView);
+        header.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("Navigationbar", "onclick: imgview" );
+                startActivity(new Intent(NavigationBarActivity.this,HomeScreen.class));
+            }
+        });
     }
 
     @Override
@@ -88,15 +102,19 @@ public DrawerLayout drawer;
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
-        if (id == R.id.nav_camera) {
+         if (id == R.id.nav_camera) {
             // Handle the camera action
             startActivity(new Intent(NavigationBarActivity.this,New_Camera.class));
         }
         else if (id == R.id.nav_slideshow) {
             startActivity(new Intent(NavigationBarActivity.this,DirectDocument.class));
         }
-
+        else if (id == R.id.nav_iImport) {
+            startActivity(new Intent(NavigationBarActivity.this,ImportImage.class));
+        }
+        else if (id == R.id.nav_map) {
+            startActivity(new Intent(NavigationBarActivity.this,MapsActivity.class));
+        }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

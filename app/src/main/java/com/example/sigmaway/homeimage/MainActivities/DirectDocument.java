@@ -1,6 +1,7 @@
 package com.example.sigmaway.homeimage.MainActivities;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +9,10 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -33,7 +38,10 @@ import android.widget.Toast;
 
 import com.example.sigmaway.homeimage.CustomClasses.DataBaseAdapter;
 import com.example.sigmaway.homeimage.CustomClasses.GridViewAdapter;
+import com.example.sigmaway.homeimage.CustomClasses.LocationAddress;
+import com.example.sigmaway.homeimage.CustomClasses.LocationGetter;
 import com.example.sigmaway.homeimage.CustomClasses.Ocr;
+import com.example.sigmaway.homeimage.PopWindow.Language_Popup;
 import com.example.sigmaway.homeimage.R;
 import com.example.sigmaway.homeimage.SlideableTabs.MainPage;
 
@@ -122,7 +130,7 @@ public class DirectDocument extends NavigationBarActivity {
         View view=getLayoutInflater().inflate(R.layout.directdocument,parent,false);
         parent.addView(view);
         sharedPref = getApplication().getSharedPreferences("shrdpref", MODE_PRIVATE);
-
+        temp= new String[]{"NULL"};
         Picture_URI = new ArrayList<Uri>();
         Picture_Name = new ArrayList<String>();
         gridviewid = 0.1;
@@ -195,7 +203,8 @@ public class DirectDocument extends NavigationBarActivity {
         click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                captureImage();
+                Intent intent=new Intent(DirectDocument.this,New_Camera.class);
+                startActivity(intent);
             }
         });
         //Edit Text - key word
@@ -386,7 +395,7 @@ public class DirectDocument extends NavigationBarActivity {
                     String fileURI = file.getPath();
                     if (fileURI.endsWith(".jpg")) {
                         String[] name = file.getName().split("_");
-                        Picture_Name.add(name[name.length - 3]);
+                        Picture_Name.add(name[0]);
                         Picture_URI.add(Uri.parse(file.getAbsolutePath()));
                         wall_gridView.invalidateViews();
                     }
@@ -400,6 +409,24 @@ public class DirectDocument extends NavigationBarActivity {
         wall_gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+            /*    LocationManager locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+              //  locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 1000, 0,obj.locationListener);
+
+                Criteria locationCritera = new Criteria();
+                locationCritera.setAccuracy(Criteria.ACCURACY_COARSE);
+                locationCritera.setAltitudeRequired(false);
+                locationCritera.setBearingRequired(false);
+                locationCritera.setCostAllowed(false);
+                locationCritera.setPowerRequirement(Criteria.POWER_HIGH);
+                locationCritera.setSpeedRequired(false);
+
+                String providerName = locationManager.getBestProvider(locationCritera, true);
+                locationManager.requestSingleUpdate(providerName,obj.locationListener, null);
+               //locationManager.requestLocationUpdates(providerName, 3000, 0, obj.locationListener);*/
+
+
                 if (gridviewid == 0.1 || gridviewid == id) {
                     gridviewid = id;
                     Log.wtf("gridviewid in onitemclick", String.valueOf(gridviewid));
@@ -416,8 +443,10 @@ public class DirectDocument extends NavigationBarActivity {
 
                         dataBaseAdapter =new DataBaseAdapter(DirectDocument.this);
                         All_KeyWords =dataBaseAdapter.GetKeys(new File(TempUri).getName());
+                        //
+                        // if (!All_KeyWords.get(1).equals("NULL"))
+                        if (All_KeyWords.size()==2)
                         temp= All_KeyWords.get(1).split(",");
-
                         adapter = new ArrayAdapter<String>(DirectDocument.this,android.R.layout.simple_dropdown_item_1line,temp );
                         KeyWord.setAdapter(adapter);
 
@@ -442,7 +471,8 @@ public class DirectDocument extends NavigationBarActivity {
 
                     dataBaseAdapter =new DataBaseAdapter(DirectDocument.this);
                     All_KeyWords =dataBaseAdapter.GetKeys(new File(TempUri).getName());
-                    temp= All_KeyWords.get(1).split(",");
+                    if (All_KeyWords.size()==2)
+                        temp= All_KeyWords.get(1).split(",");
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(DirectDocument.this,android.R.layout.simple_dropdown_item_1line,temp );
                     KeyWord.setAdapter(adapter);
 
@@ -519,8 +549,7 @@ public class DirectDocument extends NavigationBarActivity {
                         .show();
             }
         }
-        if (requestCode == 1)
-            Log.w("addhome","onrequestpermission 1");
+
     }
 
 
@@ -588,7 +617,7 @@ public class DirectDocument extends NavigationBarActivity {
             Ocr OcrObj = new Ocr();
             dataBaseAdapter =new DataBaseAdapter(DirectDocument.this);
             String value =dataBaseAdapter.getvalue("text",tempuifile.getName());
-            Log.wtf("direct doc text check",value.toString());
+         // Log.wtf("direct doc text check",value.toString());
             if (value.equals("NULL"))
             {
                 String JustFinal =  tempuifile.getName().substring(0,tempuifile.getName().lastIndexOf('.'));
@@ -787,5 +816,11 @@ public class DirectDocument extends NavigationBarActivity {
             }
 
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        startActivity(new Intent(DirectDocument.this,HomeScreen.class));
     }
 }

@@ -7,9 +7,17 @@
             android:icon="@drawable/ic_menu_camera"
             android:title="New" />
         <item
+            android:id="@+id/nav_iImport"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Import" />
+        <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Previous" />
+        <item
+            android:id="@+id/nav_map"
+            android:icon="@drawable/map"
+            android:title="Map View" />
 
     </group>
 
