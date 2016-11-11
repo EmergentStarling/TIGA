@@ -409,7 +409,7 @@ public class DirectDocument extends NavigationBarActivity {
         wall_gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                Log.wtf("grid",view.getTag()+" parent"+parent.getTag());
 
             /*    LocationManager locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
               //  locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 1000, 0,obj.locationListener);
@@ -458,7 +458,8 @@ public class DirectDocument extends NavigationBarActivity {
                         flag = true;
                         gridviewid = 0.1;
                     }
-                } else {
+                }
+                else {
 
                     view.setActivated(true);
                     flag = false;

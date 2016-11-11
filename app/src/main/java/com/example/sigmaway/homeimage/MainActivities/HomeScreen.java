@@ -111,7 +111,7 @@ public class HomeScreen extends AppCompatActivity implements OnClickListener {
               startActivity(intent);
               break;
           case R.id.home_Map:
-              intent=new Intent(HomeScreen.this,MapsActivity.class);
+              intent=new Intent(HomeScreen.this,AnalysedView.class);
               startActivity(intent);
               break;
       }

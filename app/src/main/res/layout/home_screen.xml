@@ -31,8 +31,10 @@
         android:layout_height="40dp"
         android:layout_marginTop="230dp"
         android:id="@+id/Home_New"
+        android:padding="5dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:elevation="5dp" />
     <Button
         android:text="Import"
         android:layout_width="300dp"
@@ -41,7 +43,9 @@
         android:layout_marginTop="12dp"
         android:id="@+id/Home_Import"
         android:layout_below="@+id/Home_New"
-        android:layout_alignStart="@+id/Home_New"/>
+        android:layout_alignStart="@+id/Home_New"
+        android:elevation="5dp"
+        android:padding="5dp"/>
     <Button
         android:text="Previous"
         android:background="@drawable/shape"
@@ -50,15 +54,19 @@
         android:layout_marginTop="12dp"
         android:id="@+id/Home_Previous"
         android:layout_below="@+id/Home_Import"
-        android:layout_alignStart="@+id/Home_New" />
+        android:layout_alignStart="@+id/Home_New"
+        android:elevation="5dp"
+        android:padding="5dp"/>
     <Button
-        android:text="Map View"
+        android:text="Analysis"
         android:background="@drawable/shape"
         android:layout_width="300dp"
         android:layout_height="40dp"
         android:layout_marginTop="12dp"
         android:id="@+id/home_Map"
         android:layout_below="@+id/Home_Previous"
-        android:layout_alignStart="@+id/Home_New" />
+        android:layout_alignStart="@+id/Home_New"
+        android:elevation="5dp"
+        android:padding="5dp"/>
 
 </RelativeLayout>

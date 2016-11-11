@@ -6,9 +6,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListPopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.sigmaway.homeimage.R;
 import com.squareup.picasso.Picasso;
@@ -70,10 +75,37 @@ public class GridViewAdapter extends ArrayAdapter<String> {
     class GridViewadapter_Myviewhandler {
         ImageView wall_image;
         TextView wall_name;
+        Button wall_btm;
 
         GridViewadapter_Myviewhandler(View row) {
             wall_image = (ImageView) row.findViewById(R.id.wall_image);
             wall_name = (TextView) row.findViewById(R.id.wall_name);
+            wall_btm= (Button) row.findViewById(R.id.wall_button);
+            wall_btm.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.w("adapter","button clicked");
+
+                    final ListPopupWindow dropdownmenu=new ListPopupWindow(context);
+                    String[] option={"Rename"};
+                    ArrayAdapter Spinner_Adapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_activated_1,option);
+                    dropdownmenu.setAdapter(Spinner_Adapter);
+
+                    dropdownmenu.setAnchorView(wall_name);
+
+                    /*PopupMenu dropDownMenu = new PopupMenu(context, wall_name,0,0,R.style.PopupMenu);
+                    MenuInflater inflater=dropDownMenu.getMenuInflater();
+                    inflater.inflate(R.menu.navigation_bar, dropDownMenu.getMenu());*/
+                    dropdownmenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            Toast.makeText(context, "Coming Soon", Toast.LENGTH_SHORT).show();
+                            dropdownmenu.dismiss();
+                        }
+                    });
+                    dropdownmenu.show();
+                }
+            });
         }
     }
 

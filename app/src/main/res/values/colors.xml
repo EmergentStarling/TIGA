@@ -6,4 +6,5 @@
     <color name="OliveGreen">#535c23</color>
     <color name="OliveLightGreen">#6a762a</color>
     <color name="tan"> #D2B48C</color>
+    <color name="translucent">#66FFFFFF</color>
 </resources>

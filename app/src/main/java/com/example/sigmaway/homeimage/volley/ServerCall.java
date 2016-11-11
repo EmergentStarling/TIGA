@@ -42,7 +42,7 @@ public class ServerCall {
         RequestQueue requestQueue = Volley.newRequestQueue(c);
         Log.wtf("volley","1");
       //String url="http://gosigmaway.com:8085/RAWS/resources/home/admin/reportGourav/index.html";
-        String url= "http://gosigmaway.com:8085/RAWS/process/tiga?imageName="+file.getName();
+        String url= "http://gosigmaway.com:8085/RAWS/process/tiga?imageName="+file.getName().replace(" ","%20");
         StringRequest stringRequest=new StringRequest(url, new Response.Listener<String>() {
 
             @Override

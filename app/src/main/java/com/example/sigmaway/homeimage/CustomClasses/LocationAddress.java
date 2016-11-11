@@ -33,11 +33,12 @@ public class LocationAddress {
                         {
                             sb.append(address.getAddressLine(i)).append("\n");
                         }
-                       sb1.append(address.getLocality()).append(",");
+                       sb1.append(address.getLocality()).append("_");
                         sb1.append(address.getCountryName());
-                        sb.append(address.getCountryName());
+                        sb.append(address.getLocality());
                         result.add(0,sb.toString());
                         result.add(1,sb1.toString());
+                        result.add(2,address.getLocality());
                         Log.e(TAG, "result: "+result);
                     }
                 } catch (IOException e) {

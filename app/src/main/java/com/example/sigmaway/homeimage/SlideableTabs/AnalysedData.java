@@ -78,7 +78,7 @@ public class AnalysedData extends android.support.v4.app.Fragment {
 
         String img="<html>\n" +
                 "<body>\n" +
-                "<img src=\""+directory+"\" alt=\"Mountain View\" style=\"width:350px;height:350px;\">\n" +
+                "<img src=\""+directory+"\" alt=\"Analysis Image\" style=\"width:350px;height:350px;\">\n" +
                 "\n" +
                 "</body>\n" +
                 "</html>";

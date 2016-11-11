@@ -65,13 +65,11 @@ public class VolleySendData {
                                 {
                                     ServerCall obj=new ServerCall();
                                     obj.Servercall(c,progress);
-
                                 }
                                 else if (Result.equals("Error updating data"))
                                     progress.dismiss();
                                 /*MainPage obj=new MainPage();
                                 obj.changepage();*/
-
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

@@ -18,17 +18,40 @@ public class DataBaseAdapter{
     public DataBaseAdapter(Context context){
         dataBase=new DataBase(context);
     }
-    public List<String> GetCoordinates() {
+    public List<AnalysedViewTabInfo> GetDistinctLoc() {
         SQLiteDatabase db = dataBase.getWritableDatabase();
         //select key from table_name where imagename is img_name
-        List<String> value = new ArrayList<String>();
-        String[] column = {DataBase.GeoCoordinates};
+        List<AnalysedViewTabInfo> value = new ArrayList<AnalysedViewTabInfo>();
+        String[] column = {DataBase.State};
+        Cursor cursor1 = db.query(true,DataBase.Table_Name, column, null, null, null, null,DataBase.Location+" ASC", null);
+
+        while (cursor1.moveToNext()) {
+            Log.wtf("cursor 1 ", "1");
+
+            int key_index1 = cursor1.getColumnIndex(DataBase.State);
+            AnalysedViewTabInfo info=new AnalysedViewTabInfo();
+            info.PlaceName=cursor1.getString(key_index1);
+            value.add(info);
+        }
+        cursor1.close();
+        return value;
+    }
+    public List<AnalysedViewTabInfo> GetCoordinates() {
+        SQLiteDatabase db = dataBase.getWritableDatabase();
+        //select key from table_name where imagename is img_name
+        List<AnalysedViewTabInfo> value = new ArrayList<AnalysedViewTabInfo>();
+        String[] column = {DataBase.GeoCoordinates,DataBase.State};
         Cursor cursor1 = db.query(DataBase.Table_Name, column, null, null, null, null, null);
 
         while (cursor1.moveToNext()) {
             Log.wtf("cursor 1 ", "1");
             int key_index = cursor1.getColumnIndex(DataBase.GeoCoordinates);
-                value.add(cursor1.getString(key_index));
+            int key_index1 = cursor1.getColumnIndex(DataBase.State);
+            AnalysedViewTabInfo info=new AnalysedViewTabInfo();
+            info.PlaceName=cursor1.getString(key_index1);
+            info.imgCoordinates=cursor1.getString(key_index);
+            Log.wtf("cursor 1 ", "placename: "+info.PlaceName+" coordinates: "+info.imgCoordinates);
+            value.add(info);
         }
         cursor1.close();
         return value;
@@ -39,6 +62,7 @@ public class DataBaseAdapter{
         //select key from table_name where imagename is img_name
         List<String> value=new ArrayList<String>();
         String[] column ={DataBase.ImageKey};
+
         Cursor cursor=db.query(DataBase.Table_Name,column,DataBase.ImageName+" = '"+img_name+"'",null,null,null,null);
         Cursor cursor1=db.query(DataBase.Table_Name,column,null,null,null,null,null);
         Log.wtf("cursor ", String.valueOf(cursor.getCount()));
@@ -97,7 +121,7 @@ public class DataBaseAdapter{
                             Log.wtf("database adapter else ind", "2 " );
                             finalString = finalString+subString;
                             i=finalString.length();
-                            value.add(1, value.get(1) + "," + subString);
+                            value.set(1, value.get(1) + "," + subString);
 
                         }
                     }
@@ -173,7 +197,7 @@ public class DataBaseAdapter{
         cursor.close();
         return value;
     }
-    public int Locationupdatedata(String img_name, String imgnewname,String Location, String Coordinates,String Img_URI)
+    public int Locationupdatedata(String img_name, String imgnewname,String Location, String Coordinates,String Img_URI, String state)
     {
         SQLiteDatabase db= dataBase.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
@@ -181,6 +205,7 @@ public class DataBaseAdapter{
         contentValues.put(DataBase.Location,Location);
         contentValues.put(DataBase.GeoCoordinates,Coordinates);
         contentValues.put(DataBase.ImageURI,Img_URI);
+        contentValues.put(DataBase.State,state);
         String[] whereArgs={img_name};
         int count =db.update(DataBase.Table_Name,contentValues,DataBase.ImageName+" =?",whereArgs);
         return count;
@@ -260,7 +285,7 @@ public class DataBaseAdapter{
         private static final String ID="_ID";
         private static final String Database_Name="SigmaWay";
         private static final String Table_Name="ImageData";
-        private static final int Database_Version=7;
+        private static final int Database_Version=8;
         private static final String ImageName="IMG_NAME";
         private static final String ImageText="IMG_TEXT";
         private static final String ImageKey="IMG_KEY";
@@ -270,14 +295,15 @@ public class DataBaseAdapter{
         private static final String ArabicToEnglishText="ARABIC_ENGLISH_TEXT";
         private static final String GeoCoordinates="Geo_Coordinate";
         private static final String Location="Location";
-        private static final String BriefLocation="Brief_Location";
+        private static final String State="State";
         String Tag=this.getClass().getName();
         private static final String Alter_table_Query="ALTER TABLE "+Table_Name+" ADD "+GeoCoordinates+" VARCHAR(255); ";
         private static final String Alter_table_Query1="ALTER TABLE "+Table_Name+" ADD "+Location+" VARCHAR(255); ";
+        private static final String Alter_table_Query2="ALTER TABLE "+Table_Name+" ADD "+State+" VARCHAR(255); ";
         String Create_Table_Query ="CREATE TABLE "+ Table_Name+"("+ID+" INTEGER PRIMARY KEY AUTOINCREMENT,"+ImageName
                 +" VARCHAR(255),"+ImageURI+" VARCHAR(255),"+ImageText+" VARCHAR(255),"+ImageKey+" VARCHAR(255),"
                 +ImageTransText+" VARCHAR(255),"+ArabicToEnglishText+" VARCHAR(255),"+AnalysedData+" VARCHAR(255),"
-                +GeoCoordinates+" VARCHAR(255),"+Location+" VARCHAR(255));";
+                +GeoCoordinates+" VARCHAR(255),"+Location+" VARCHAR(255),"+State+" VARCHAR(255));";
 
             public DataBase(Context context) {
             super(context, Database_Name, null, Database_Version);
@@ -293,9 +319,12 @@ public class DataBaseAdapter{
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             Log.wtf(Tag,"onupgrade called");
-            db.execSQL(Alter_table_Query);
-            db.execSQL(Alter_table_Query1);
+            if (oldVersion==6){
+                db.execSQL(Alter_table_Query);
+                db.execSQL(Alter_table_Query1);
+            }
 
+            db.execSQL(Alter_table_Query2);
         }
     }
 }

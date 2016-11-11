@@ -35,6 +35,7 @@ public class ImportImage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.import_image);
        importimage();
+        dataBaseAdapter=new DataBaseAdapter(this);
         sharedPref = getApplication().getSharedPreferences("shrdpref", MODE_PRIVATE);
     }
     @Override

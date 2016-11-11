@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/analysed_view"
+    android:layout_width="match_parent"
+    android:background="#EDEDED"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context="com.example.sigmaway.homeimage.MainActivities.AnalysedView">
+
+<FrameLayout
+    android:id="@+id/analysedviewframe"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <fragment
+        android:layout_weight="1"
+        android:id="@+id/AnalysedViewMap"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/AnalysedRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_gravity="bottom"
+        android:background="#8CFFFFFF"
+        android:layout_height="wrap_content">
+    </android.support.v7.widget.RecyclerView>
+
+</FrameLayout>
+
+</LinearLayout>

@@ -162,7 +162,7 @@ public class Language_Popup extends AppCompatActivity {
             progress = new ProgressDialog(Language_Popup.this);
             progress.setMessage("processing");
             progress.setCancelable(false);
-         //   progress.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        //    progress.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             progress.setCanceledOnTouchOutside(false);
             progress.show();
             if (!OpenCVLoader.initDebug()) {
@@ -293,7 +293,7 @@ public class Language_Popup extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             TempUri=null;
-            progress.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+          //  progress.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
             progress.dismiss();
             if (SpinnerPosition==1)

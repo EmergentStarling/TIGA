@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="160dp"
+    android:layout_height="80dp"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    android:orientation="vertical">
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardElevation="6dp"
+        app:cardBackgroundColor="#B3FFFFFF"
+       app:cardUseCompatPadding="true"
+        app:cardCornerRadius="2dp"
+        android:id="@+id/AnalysedViewCardView">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/recycler_view_selector"
+            android:id="@+id/AnalysedRecyclerViewLinearLayout"
+            android:orientation="vertical">
+            <TextView
+                android:layout_weight="2"
+                android:id="@+id/PlaceName"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#66FFFFFF"
+                android:gravity="center_horizontal"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+            <TextView
+                android:layout_weight="3"
+                android:id="@+id/PlaceImageCount"
+                android:background="#66FFFFFF"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+</LinearLayout>

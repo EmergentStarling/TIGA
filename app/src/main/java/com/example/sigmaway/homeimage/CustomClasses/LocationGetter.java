@@ -95,7 +95,7 @@ public class LocationGetter {
                     File f2=new File(file.getParent() +File.separator+ Address.get(1) + "_" + imgname);
                     boolean bool= file.renameTo(f2);
                     Log.wtf("getter new file",  f2.getAbsolutePath()+ bool);
-                   int value =dataBaseAdapter.Locationupdatedata(imgname,f2.getName(),Address.get(0),location.getLatitude()+","+location.getLongitude(), String.valueOf(f2.toURI()));
+                   int value =dataBaseAdapter.Locationupdatedata(imgname,f2.getName(),Address.get(0),location.getLatitude()+","+location.getLongitude(), String.valueOf(f2.toURI()),Address.get(2));
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("ImgUri", f2.getPath());
                     editor.apply();
@@ -162,6 +162,7 @@ public class LocationGetter {
         }
         else
         {
+
             Log.wtf("location getter","in else");
             return 0;
             // Provider not enabled, prompt user to enable it

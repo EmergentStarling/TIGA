@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:paddingBottom="0dip"
     android:paddingTop="0dip">
@@ -60,9 +61,8 @@
 
         android:focusable="false"
         android:focusableInTouchMode="false"
-        android:horizontalSpacing="8.0dip"
         android:numColumns="2"
-        android:verticalSpacing="8.0dip" />
+      />
 
     <LinearLayout
         android:layout_width="fill_parent"

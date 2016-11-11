@@ -112,9 +112,9 @@ Button header;
         else if (id == R.id.nav_iImport) {
             startActivity(new Intent(NavigationBarActivity.this,ImportImage.class));
         }
-        else if (id == R.id.nav_map) {
-            startActivity(new Intent(NavigationBarActivity.this,MapsActivity.class));
-        }
+         else if (id == R.id.nav_analysed) {
+             startActivity(new Intent(NavigationBarActivity.this,AnalysedView.class));
+         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
