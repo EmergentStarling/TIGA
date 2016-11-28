@@ -14,6 +14,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.TableLayout;
 
 import com.example.sigmaway.homeimage.CustomClasses.DataBaseAdapter;
 import com.example.sigmaway.homeimage.R;
@@ -28,6 +29,7 @@ public class AnalysedData extends android.support.v4.app.Fragment {
     WebView AnalysedData;
     File file;
     Button DetailedResult;
+    TableLayout AnalysedDataTable;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,7 +43,8 @@ public class AnalysedData extends android.support.v4.app.Fragment {
 
             }
         });
-   //     WebSettings webSettings = AnalysedData.getSettings();
+
+   //   WebSettings webSettings = AnalysedData.getSettings();
         AnalysedData.getSettings().setJavaScriptEnabled(true);
         AnalysedData.getSettings().setDomStorageEnabled(true);
         AnalysedData.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);

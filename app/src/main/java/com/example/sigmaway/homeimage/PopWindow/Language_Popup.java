@@ -334,9 +334,7 @@ public class Language_Popup extends AppCompatActivity {
             progress.setCancelable(false);
             progress.setCanceledOnTouchOutside(false);
             progress.show();
-
             super.onPreExecute();
-
         }
         @Override
         protected Integer doInBackground(Void... params) {

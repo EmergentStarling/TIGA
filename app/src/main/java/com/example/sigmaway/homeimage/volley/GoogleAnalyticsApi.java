@@ -2,15 +2,12 @@ package com.example.sigmaway.homeimage.volley;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.support.v4.app.FragmentManager;
 import android.util.Base64;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkResponse;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -18,10 +15,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.sigmaway.homeimage.CustomClasses.Communicator;
 import com.example.sigmaway.homeimage.CustomClasses.DataBaseAdapter;
+import com.example.sigmaway.homeimage.CustomClasses.ImageInfo;
 import com.example.sigmaway.homeimage.R;
-import com.example.sigmaway.homeimage.SlideableTabs.AnalysedData;
-import com.example.sigmaway.homeimage.SlideableTabs.MainPage;
-import com.example.sigmaway.homeimage.SlideableTabs.Myfragmentpageradapter;
 
 import java.io.File;
 import java.util.HashMap;
@@ -31,27 +26,26 @@ import java.util.Map;
  * Created by Family on 22-09-2016.
  */
 
-public class ServerCall {
+public class GoogleAnalyticsApi {
     File file;
     long id;
     Communicator comm;
-    public void Servercall(final Context c, final ProgressDialog progressDialog)
+    public void GoogleAnalyticsApi(final Context c, final ProgressDialog progressDialog, final ImageInfo info)
     {    final SharedPreferences sharedPref = c.getSharedPreferences("shrdpref", Context.MODE_PRIVATE);
         Uri ImageUri = Uri.parse(sharedPref.getString("ImgUri", "no name"));
        file = new File(String.valueOf(ImageUri));
 
         RequestQueue requestQueue = Volley.newRequestQueue(c);
         Log.wtf("volley","1");
-      //String url="http://gosigmaway.com:8085/RAWS/resources/home/admin/reportGourav/index.html";
-        String url= "http://gosigmaway.com:8085/RAWS/process/tiga?imageName="+file.getName().replace(" ","%20");
+        String url="https://language.googleapis.com/v1/documents:analyzeEntities?fields=entities&key=AIzaSyAukiG7vFB3H0L2ovv2N0pUk3_TY9YmxVc";
+        //String url= "http://gosigmaway.com:8085/RAWS/process/tiga?imageName="+file.getName().replace(" ","%20");
         StringRequest stringRequest=new StringRequest(url, new Response.Listener<String>() {
-
             @Override
             public void onResponse(String response) {
                 Log.i("response array", response);
                 DataBaseAdapter dataBaseAdapter =new DataBaseAdapter(c);
                 Log.d("in sever call" , String.valueOf(c));
-                   id=dataBaseAdapter.updatedata(file.getName(),"AnalysedData",response);
+                   id=dataBaseAdapter.updatedata(file.getName(),"GoogleAnalyticsApiResponse",response);
                 if (id==0)
                 {
                     Log.wtf("Analysed data not updated", String.valueOf(id));
@@ -87,17 +81,13 @@ public class ServerCall {
                 Log.wtf(" response", res);*/
                 progressDialog.dismiss();
             }
-        })
-                //header for rapidminer
-        {
+        }){
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Log.wtf("volley ", "header");
-                HashMap<String, String> params = new HashMap<String, String>();
-                String creds = String.format("%s:%s","amrita","7aarora7");
-                String auth = "Basic " + Base64.encodeToString(creds.getBytes(), Base64.DEFAULT);
-                params.put("Authorization", auth);
-                return params;
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> param1 = new HashMap<String, String>();
+                param1.put("image_name", info.ImageName);
+                param1.put("ocr_text", info.EngText);
+                return param1;
             }
         };
         requestQueue.add(stringRequest);

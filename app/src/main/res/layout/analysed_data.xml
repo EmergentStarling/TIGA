@@ -18,10 +18,16 @@
         android:scrollbars="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></WebView>
+    <TableLayout
+        android:id="@+id/analysed_table"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </TableLayout>
 <Button
     android:id="@+id/analysed_Details"
     android:layout_width="match_parent"
     android:layout_height="50dp"
+    android:layout_gravity="bottom"
     android:background="@color/OliveGreen"
     android:text="Detailed Analysis"
     />

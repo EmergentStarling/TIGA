@@ -9,10 +9,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -21,7 +17,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -32,19 +27,27 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.sigmaway.homeimage.CustomClasses.DataBaseAdapter;
 import com.example.sigmaway.homeimage.CustomClasses.GridViewAdapter;
-import com.example.sigmaway.homeimage.CustomClasses.LocationAddress;
-import com.example.sigmaway.homeimage.CustomClasses.LocationGetter;
+import com.example.sigmaway.homeimage.CustomClasses.ImageInfo;
 import com.example.sigmaway.homeimage.CustomClasses.Ocr;
-import com.example.sigmaway.homeimage.PopWindow.Language_Popup;
 import com.example.sigmaway.homeimage.R;
 import com.example.sigmaway.homeimage.SlideableTabs.MainPage;
+import com.example.sigmaway.homeimage.volley.VolleySendData;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
@@ -65,11 +68,13 @@ public class DirectDocument extends NavigationBarActivity {
     // Activity request codes
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
     private static final String IMAGE_DIRECTORY_NAME = "Sigmaway/";
-    List<String> Picture_Name;
+    List<String> Picture_Name ,value1;
     List<Uri> Picture_URI;
     Uri fileUri;
-    Button click;
+    Uri FileURI;
+    File file;
     String[] temp;
+    Activity activity;
     GridView wall_gridView;
     boolean flag = true;
     ArrayAdapter<String> adapter;
@@ -88,7 +93,6 @@ public class DirectDocument extends NavigationBarActivity {
     String TAG = "Direct Documents";
     String[] lang_list={"Select Language","English","Arabic"};
     SharedPreferences sharedPref;
-    Toolbar toolbar;
     BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
         public void onManagerConnected(int status) {
@@ -123,6 +127,8 @@ public class DirectDocument extends NavigationBarActivity {
         } else {
             mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
         }*/
+        activity=this;
+        value1=new ArrayList<>();
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         View yourListView = findViewById(R.id.content_navigation_bar);
         ViewGroup parent = (ViewGroup) yourListView.getParent();
@@ -149,8 +155,22 @@ public class DirectDocument extends NavigationBarActivity {
         OcrLanguageSelector.setAdapter(Spinner_Adapter);
         OcrLanguageSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
                 SpinnerPosition = position;
+                if (position==0)
+                {
+
+                    KeyWord_AddBtn.setVisibility(View.VISIBLE);
+                    ocrLanguageBtn.setVisibility(View.GONE);
+                }
+                if (position>0)
+                {
+
+
+                    KeyWord_AddBtn.setVisibility(View.VISIBLE);
+                    ocrLanguageBtn.setVisibility(View.VISIBLE);
+                }
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -198,15 +218,7 @@ public class DirectDocument extends NavigationBarActivity {
         });
 
 
-        //Click Button
-        click = (Button) findViewById(R.id.click_btn);
-        click.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(DirectDocument.this,New_Camera.class);
-                startActivity(intent);
-            }
-        });
+
         //Edit Text - key word
         KeyWord = (MultiAutoCompleteTextView) findViewById(R.id.KeyWord);
         KeyWord.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
@@ -288,7 +300,8 @@ public class DirectDocument extends NavigationBarActivity {
                 {
                     KeyWord_AddBtn.setText("Add");
                     KeyWord.setVisibility(View.VISIBLE);
-                    click.setVisibility(View.GONE);
+                    OcrLanguageSelector.setVisibility(View.GONE);
+                    ocrLanguageBtn.setVisibility(View.GONE);
                     Click=true;
                 }
                 else {
@@ -374,7 +387,7 @@ public class DirectDocument extends NavigationBarActivity {
                     }
                     KeyWord_AddBtn.setText("Add Key");
                     KeyWord.setVisibility(View.GONE);
-                    click.setVisibility(View.VISIBLE);
+                    OcrLanguageSelector.setVisibility(View.VISIBLE);
                     Click=false;
                 }
             }
@@ -472,11 +485,13 @@ public class DirectDocument extends NavigationBarActivity {
 
                     dataBaseAdapter =new DataBaseAdapter(DirectDocument.this);
                     All_KeyWords =dataBaseAdapter.GetKeys(new File(TempUri).getName());
-                    if (All_KeyWords.size()==2)
+                    if (All_KeyWords.size()>=2)
+                    {
+                        Log.wtf("Direct DOc","ALl keyword size"+All_KeyWords.size());
                         temp= All_KeyWords.get(1).split(",");
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(DirectDocument.this,android.R.layout.simple_dropdown_item_1line,temp );
-                    KeyWord.setAdapter(adapter);
-
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(DirectDocument.this,android.R.layout.simple_dropdown_item_1line,temp );
+                        KeyWord.setAdapter(adapter);
+                    }
                 }
             }
         });
@@ -728,11 +743,150 @@ public class DirectDocument extends NavigationBarActivity {
         }
         @Override
         protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            if (SpinnerPosition==1)
+            {
+
+
+              FileURI = Uri.parse(sharedPref.getString("ImgUri", "no name"));
+                File file=new File(FileURI.toString());
+                value1= dataBaseAdapter.getdata(file.getName());
+                ImageInfo info=new ImageInfo();
+                info.ImageName=file.getName();
+                info.EngText=value1.get(0);
+                info.Keyword=value1.get(1);
+                info.UserID="8800304343";
+                VolleySendData obj=new VolleySendData();
+                String result= obj.VolleySend(activity,info);
+                ImageDetails.putExtra("language",lang_list[SpinnerPosition]);
+                startActivity(ImageDetails);
+
+            }
+            if (SpinnerPosition==2)
+            {
+
+                DirectDocument.translate trans=new translate();
+                trans.execute();
+            }
+            progress.dismiss();
+
+        }
+    }
+
+    private class translate extends AsyncTask<Void,Void,Integer>
+    {
+        ProgressDialog progress;
+        @Override
+        protected void onPreExecute() {
+            Log.i("ocrtext translation", "onpreexecute");
+            progress = new ProgressDialog(activity);
+            progress.setMessage("processing");
+            progress.setCancelable(false);
+            progress.setCanceledOnTouchOutside(false);
+            progress.show();
+
+            super.onPreExecute();
+
+        }
+        @Override
+        protected Integer doInBackground(Void... params) {
+            dataBaseAdapter =new DataBaseAdapter(DirectDocument.this);
+           file = new File(TempUri);
+            String engtext= dataBaseAdapter.GetTranslatedText(file.getName(),"en");
+            Log.wtf("translated text frag",engtext.toString());
+            if (engtext.equals("NULL"))
+            {
+                Log.wtf("volley","null test pass");
+                FileURI = Uri.parse(sharedPref.getString("ImgUri", "no name"));
+                Log.wtf("volley","null test pass");
+                file=new File(FileURI.toString());
+                Log.wtf("volley","null test pass");
+                value1= dataBaseAdapter.getdata(file.getName());
+                Log.wtf("volley","null test pass");
+                RequestQueue requestQueue = Volley.newRequestQueue(activity);
+                Log.wtf("volley","1");
+                String YOUR_API_KEY="AIzaSyCDO95TXRHa2RtHr1u_LBJaQSER9XFEKtU";
+                String sourcetxt=value1.get(0).replace(" ","%20");
+                String sourcetext=sourcetxt.replace("\n","%0A");
+                String url = "https://www.googleapis.com/language/translate/v2?key="+YOUR_API_KEY+"&q="+sourcetext+"&source=ar&target=en";
+                // String url=" https://www.googleapis.com/language/translate/v2?key="+YOUR_API_KEY+"&source=en&target=de&callback=translateText&q="+source;
+                //String url= "http://gosigmaway.com:8085/RAWS/process/armyService";
+
+                StringRequest stringRequest=new StringRequest(url, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.i("response array", response);
+                        try {
+                            JSONObject responseobj=new JSONObject(response);
+                            //   JSONObject trasnlatetext= responseobj.getJSONObject("translateText");
+                            JSONObject dataobj=responseobj.getJSONObject("data");
+                            JSONArray translationsobj= dataobj.getJSONArray("translations");
+                            JSONObject translatedText=translationsobj.getJSONObject(0);
+                            String transtext= translatedText.getString("translatedText");
+                            long id=dataBaseAdapter.updatedata(file.getName(),"engtransdata",transtext);
+                            ImageInfo info=new ImageInfo();
+                            String engtext= dataBaseAdapter.GetTranslatedText(file.getName(),"en");
+                            Log.wtf("arbic translated text",engtext);
+                            info.ImageName=file.getName();
+                            info.EngText=transtext;
+                            info.Keyword=value1.get(1);
+                            info.UserID="8800304343";
+                            VolleySendData obj=new VolleySendData();
+
+                            String result= obj.VolleySend(activity,info);
+                            Log.wtf("key if id", String.valueOf(id));
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("result", " hi fail listning" + error);
+
+                /*    NetworkResponse response = error.networkResponse;
+                    String res = new String(response.data);
+                    // Now you can use any deserializer to make sense of data
+                    Log.wtf(" response", res);*/
+                        progress.dismiss();
+
+                    }
+                })
+                        //header for rapidminer
+       /* {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Log.wtf("volley ", "header");
+                HashMap<String, String> params = new HashMap<String, String>();
+                String creds = String.format("%s:%s","gouravchawla","30march93");
+                String auth = "Basic " + Base64.encodeToString(creds.getBytes(), Base64.DEFAULT);
+                params.put("Authorization", auth);
+                return params;
+            }}*/
+                        ;
+                requestQueue.add(stringRequest);
+            }
+
+            Integer i=1;
+            return i;
+        }
+
+        @Override
+        protected void onPostExecute(Integer s) {
+
+            //  Log.wtf("translated text",result);
+            super.onPostExecute(s);
             TempUri=null;
+            Log.i("ocrtext translation", "onpostexecute");
             ImageDetails.putExtra("language",lang_list[SpinnerPosition]);
             startActivity(ImageDetails);
             progress.dismiss();
-            super.onPostExecute(aVoid);
+
+
+
         }
     }
     public void StoragePermissionGranted1() {
@@ -750,7 +904,7 @@ public class DirectDocument extends NavigationBarActivity {
                         String fileURI = file.getPath();
                         if (fileURI.endsWith(".jpg")) {
                             String[] name = file.getName().split("_");
-                            Picture_Name.add(name[name.length - 3]);
+                            Picture_Name.add(name[0]);
                             Picture_URI.add(Uri.parse(file.getAbsolutePath()));
                             }
                     }
@@ -790,7 +944,7 @@ public class DirectDocument extends NavigationBarActivity {
                             String fileURI = file.getPath();
                             if (fileURI.endsWith(".jpg")) {
                                 String[] name = file.getName().split("_");
-                                Picture_Name.add(name[name.length - 3]);
+                                Picture_Name.add(name[0]);
                                 Picture_URI.add(Uri.parse(file.getAbsolutePath()));
                                 wall_gridView.invalidateViews();
                             }
@@ -821,7 +975,7 @@ public class DirectDocument extends NavigationBarActivity {
 
     @Override
     public void onBackPressed() {
-        finish();
+        super.onBackPressed();
         startActivity(new Intent(DirectDocument.this,HomeScreen.class));
     }
 }

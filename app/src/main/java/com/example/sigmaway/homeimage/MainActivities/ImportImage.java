@@ -45,17 +45,29 @@ public class ImportImage extends AppCompatActivity {
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
             Uri selectedImage = data.getData();
             Log.wtf(" import image", String.valueOf(selectedImage));
-            String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
-            Cursor cursor = getContentResolver().query(selectedImage,
-                    filePathColumn, null, null, null);
-            cursor.moveToFirst();
+            if(selectedImage.getScheme().equals("content"))
+            {
+//                Log.wtf("receiving intent",imageUri.toString()+ "  type  " +imageUri.getScheme());
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            picturePath = cursor.getString(columnIndex);
-            cursor.close();
-            // String picturePath contains the path of selected Image
-            Log.wtf(" import image",picturePath);
+                Cursor cursor = getContentResolver().query(selectedImage,
+                        filePathColumn, null, null, null);
+                cursor.moveToFirst();
+
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+               picturePath = cursor.getString(columnIndex);
+                cursor.close();
+                // String picturePath contains the path of selected Image
+                Log.wtf(" import content image",picturePath);
+            }
+            else if (selectedImage.getScheme().equals("file"))
+            {
+
+                picturePath=selectedImage.getPath();
+                Log.wtf(" import file image",picturePath);
+
+            }
             try {
                 File sd = Environment.getExternalStorageDirectory();
                 if (sd.canWrite()) {
@@ -102,7 +114,8 @@ public class ImportImage extends AppCompatActivity {
 
     }
     private void importimage(){
-        Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        i.setType("image/*");
         startActivityForResult(i, RESULT_LOAD_IMAGE);
     }
 }

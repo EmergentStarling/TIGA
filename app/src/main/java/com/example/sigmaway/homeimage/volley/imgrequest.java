@@ -35,7 +35,6 @@ public class imgrequest {
         Uri ImageUri = Uri.parse(sharedPref.getString("ImgUri", "no name"));
         file = new File(String.valueOf(ImageUri));
         ImageView mImageView;
-
         String url="http://gosigmaway.com:8085/RAWS/resources/home/admin/TIGA/Report/"+file.getName().replace(" ","%20")+"/image1.png ";
         // mImageView = (ImageView) findViewById(R.id.myImage);
         // Retrieves an image specified by the URL, displays it in the UI.

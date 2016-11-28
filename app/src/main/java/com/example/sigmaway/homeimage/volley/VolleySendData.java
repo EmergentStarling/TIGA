@@ -2,6 +2,7 @@ package com.example.sigmaway.homeimage.volley;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
@@ -67,7 +68,11 @@ public class VolleySendData {
                                     obj.Servercall(c,progress);
                                 }
                                 else if (Result.equals("Error updating data"))
+                                {
                                     progress.dismiss();
+
+                                }
+
                                 /*MainPage obj=new MainPage();
                                 obj.changepage();*/
                             } catch (JSONException e) {

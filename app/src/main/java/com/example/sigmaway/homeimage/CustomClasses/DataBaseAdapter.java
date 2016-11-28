@@ -19,7 +19,7 @@ public class DataBaseAdapter{
         dataBase=new DataBase(context);
     }
     public List<AnalysedViewTabInfo> GetDistinctLoc() {
-        SQLiteDatabase db = dataBase.getWritableDatabase();
+        SQLiteDatabase db = dataBase.getReadableDatabase();
         //select key from table_name where imagename is img_name
         List<AnalysedViewTabInfo> value = new ArrayList<AnalysedViewTabInfo>();
         String[] column = {DataBase.State};
@@ -34,10 +34,11 @@ public class DataBaseAdapter{
             value.add(info);
         }
         cursor1.close();
+        db.close();
         return value;
     }
     public List<AnalysedViewTabInfo> GetCoordinates() {
-        SQLiteDatabase db = dataBase.getWritableDatabase();
+        SQLiteDatabase db = dataBase.getReadableDatabase();
         //select key from table_name where imagename is img_name
         List<AnalysedViewTabInfo> value = new ArrayList<AnalysedViewTabInfo>();
         String[] column = {DataBase.GeoCoordinates,DataBase.State};
@@ -54,11 +55,12 @@ public class DataBaseAdapter{
             value.add(info);
         }
         cursor1.close();
+        db.close();
         return value;
     }
     public List<String> GetKeys(String img_name)
     {
-        SQLiteDatabase db= dataBase.getWritableDatabase();
+        SQLiteDatabase db= dataBase.getReadableDatabase();
         //select key from table_name where imagename is img_name
         List<String> value=new ArrayList<String>();
         String[] column ={DataBase.ImageKey};
@@ -131,11 +133,12 @@ public class DataBaseAdapter{
    //  Log.wtf("database check value", value.get(value.size()-1));
         cursor.close();
         cursor1.close();
+        db.close();
         return value;
     }
     public String GetAnalysedText(String img_name)
     {
-        SQLiteDatabase db= dataBase.getWritableDatabase();
+        SQLiteDatabase db= dataBase.getReadableDatabase();
         //select key from table_name where imagename is img_name
         String value=null;
         String[] column ={DataBase.AnalysedData};
@@ -149,12 +152,13 @@ public class DataBaseAdapter{
             value=cursor.getString(text_index);
         }
         cursor.close();
+        db.close();
         return value;
     }
     public String GetTranslatedText(String img_name,String lang)
     {
         String language = null;
-        SQLiteDatabase db= dataBase.getWritableDatabase();
+        SQLiteDatabase db= dataBase.getReadableDatabase();
         //select key from table_name where imagename is img_name
         String value=null;
         if (lang.equals("en")) {
@@ -175,10 +179,11 @@ public class DataBaseAdapter{
             value=cursor.getString(text_index);
         }
         cursor.close();
+        db.close();
         return value;
     }
     public List<String> getdata(String img_name){
-        SQLiteDatabase db= dataBase.getWritableDatabase();
+        SQLiteDatabase db= dataBase.getReadableDatabase();
         //select key from table_name where imagename is img_name
         List<String> value=new ArrayList<String>();
         String[] column ={DataBase.ImageKey, DataBase.ImageText};
@@ -195,6 +200,7 @@ public class DataBaseAdapter{
             Log.wtf("value 1", value.get(1));
         }
         cursor.close();
+        db.close();
         return value;
     }
     public int Locationupdatedata(String img_name, String imgnewname,String Location, String Coordinates,String Img_URI, String state)
@@ -208,6 +214,7 @@ public class DataBaseAdapter{
         contentValues.put(DataBase.State,state);
         String[] whereArgs={img_name};
         int count =db.update(DataBase.Table_Name,contentValues,DataBase.ImageName+" =?",whereArgs);
+        db.close();
         return count;
     }
     public long updatedata(String img_name,String type, String value)
@@ -230,9 +237,11 @@ public class DataBaseAdapter{
             contentValues.put(DataBase.AnalysedData ,value);
         else if (type.equals("location"))
             contentValues.put(DataBase.Location,value);
-
+        else if (type.equals("GoogleAnalyticsApiResponse"))
+            contentValues.put(DataBase.GoogleAnalyticsApiResponse,value);
             String[] whereArgs={img_name};
         long count =db.update(DataBase.Table_Name,contentValues,DataBase.ImageName+" =?",whereArgs);
+        db.close();
         return count;
     }
     public long insertdata(String img_name,String img_uri,String img_text,String img_key,String img_fa_tran_text,String img_eng_tran_text,String img_analysed ){
@@ -247,10 +256,11 @@ public class DataBaseAdapter{
         contentValues.put(DataBase.ArabicToEnglishText,img_eng_tran_text);
         long id=db.insert(DataBase.Table_Name,null,contentValues);
         Log.wtf("INSERT DATA", String.valueOf(id));
+        db.close();
         return id;
     }
     public String getvalue(String Type,String img_name){
-        SQLiteDatabase db= dataBase.getWritableDatabase();
+        SQLiteDatabase db= dataBase.getReadableDatabase();
         //select key from table_name where imagename is img_name
         String value=null;
 
@@ -278,14 +288,14 @@ public class DataBaseAdapter{
             cursor.close();
         }
         Log.wtf("value",value);
-
+        db.close();
         return value;
     }
     static class DataBase extends SQLiteOpenHelper {
         private static final String ID="_ID";
         private static final String Database_Name="SigmaWay";
         private static final String Table_Name="ImageData";
-        private static final int Database_Version=8;
+        private static final int Database_Version=9;
         private static final String ImageName="IMG_NAME";
         private static final String ImageText="IMG_TEXT";
         private static final String ImageKey="IMG_KEY";
@@ -296,14 +306,17 @@ public class DataBaseAdapter{
         private static final String GeoCoordinates="Geo_Coordinate";
         private static final String Location="Location";
         private static final String State="State";
+        private static final String GoogleAnalyticsApiResponse="Google_Analytics_API_Response";
         String Tag=this.getClass().getName();
         private static final String Alter_table_Query="ALTER TABLE "+Table_Name+" ADD "+GeoCoordinates+" VARCHAR(255); ";
         private static final String Alter_table_Query1="ALTER TABLE "+Table_Name+" ADD "+Location+" VARCHAR(255); ";
         private static final String Alter_table_Query2="ALTER TABLE "+Table_Name+" ADD "+State+" VARCHAR(255); ";
+        private static final String Alter_table_Query3="ALTER TABLE "+Table_Name+" ADD "+GoogleAnalyticsApiResponse+" VARCHAR(255); ";
         String Create_Table_Query ="CREATE TABLE "+ Table_Name+"("+ID+" INTEGER PRIMARY KEY AUTOINCREMENT,"+ImageName
                 +" VARCHAR(255),"+ImageURI+" VARCHAR(255),"+ImageText+" VARCHAR(255),"+ImageKey+" VARCHAR(255),"
                 +ImageTransText+" VARCHAR(255),"+ArabicToEnglishText+" VARCHAR(255),"+AnalysedData+" VARCHAR(255),"
-                +GeoCoordinates+" VARCHAR(255),"+Location+" VARCHAR(255),"+State+" VARCHAR(255));";
+                +GeoCoordinates+" VARCHAR(255),"+Location+" VARCHAR(255),"+State+" VARCHAR(255),"
+                +GoogleAnalyticsApiResponse+"VARCHAR(255));";
 
             public DataBase(Context context) {
             super(context, Database_Name, null, Database_Version);
@@ -323,8 +336,10 @@ public class DataBaseAdapter{
                 db.execSQL(Alter_table_Query);
                 db.execSQL(Alter_table_Query1);
             }
-
+            if(oldVersion==7)
             db.execSQL(Alter_table_Query2);
+            if (oldVersion==8)
+                db.execSQL(Alter_table_Query3);
         }
     }
 }

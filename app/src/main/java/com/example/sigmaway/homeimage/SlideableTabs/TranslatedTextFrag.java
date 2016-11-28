@@ -90,7 +90,7 @@ public class TranslatedTextFrag extends Fragment   {
         SharedPreferences sharedPref = getActivity().getSharedPreferences("shrdpref", Context.MODE_PRIVATE);
         Uri ImageUri = Uri.parse(sharedPref.getString("ImgUri", "no name"));
         final File file = new File(String.valueOf(ImageUri));
-        String lang=sharedPref.getString("lang","fa");
+        String lang=sharedPref.getString("lang","en");
         Log.wtf("translated text",lang);
         DataBaseAdapter dataBaseAdapter =new DataBaseAdapter(getActivity().getApplicationContext());
         String value= dataBaseAdapter.GetTranslatedText(file.getName(),lang);

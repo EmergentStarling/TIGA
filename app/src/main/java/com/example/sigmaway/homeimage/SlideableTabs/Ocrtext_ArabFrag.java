@@ -51,7 +51,7 @@ public class Ocrtext_ArabFrag extends Fragment {
     Spinner LanguageSelector;
     File file;
     int pos=0;
-    String[] LangList={"Farsi","English"};
+    String[] LangList={"English"};
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -71,9 +71,9 @@ public class Ocrtext_ArabFrag extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
               pos=position;
-                if (position==0)
+        /*        if (position==0)
                 target="fa";
-                else if (position==1)
+                else if (position==1)*/
                     target="en";
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString("lang",target);
@@ -159,6 +159,7 @@ public class Ocrtext_ArabFrag extends Fragment {
             String YOUR_API_KEY="AIzaSyCDO95TXRHa2RtHr1u_LBJaQSER9XFEKtU";
             String sourcetxt=value.get(0).replace(" ","%20");
             String sourcetext=sourcetxt.replace("\n","%0A");
+            Log.i("sourcetext", sourcetext);
            String url = "https://www.googleapis.com/language/translate/v2?key="+YOUR_API_KEY+"&q="+sourcetext+"&source=ar&target="+target;
             // String url=" https://www.googleapis.com/language/translate/v2?key="+YOUR_API_KEY+"&source=en&target=de&callback=translateText&q="+source;
             //String url= "http://gosigmaway.com:8085/RAWS/process/armyService";
@@ -177,12 +178,12 @@ public class Ocrtext_ArabFrag extends Fragment {
                         String transtext= translatedText.getString("translatedText");
                         DataBaseAdapter dataBaseAdapter =new DataBaseAdapter(getActivity().getApplicationContext());
                         long id=0;
-                        if (pos==0)
+                   /*     if (pos==0)
                         {
                              id=dataBaseAdapter.updatedata(file.getName(),"transtext",transtext);
                         }
-
-                        else if (pos==1)
+*/
+                         if (pos==0)
                         {
                            id=dataBaseAdapter.updatedata(file.getName(),"engtransdata",transtext);
                         }
