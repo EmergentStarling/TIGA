@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -35,6 +36,7 @@ public class HomeScreen extends AppCompatActivity implements OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.home_screen);
         setTitle("");
         toolbar= (Toolbar) findViewById(R.id.Home_toolbar);
@@ -156,3 +158,10 @@ public class HomeScreen extends AppCompatActivity implements OnClickListener {
         finish();
     }
 }
+
+
+
+
+
+
+

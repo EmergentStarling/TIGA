@@ -136,12 +136,12 @@ public class DataBaseAdapter{
         db.close();
         return value;
     }
-    public String GetAnalysedText(String img_name)
+    public List<String> GetAnalysedText(String img_name)
     {
         SQLiteDatabase db= dataBase.getReadableDatabase();
         //select key from table_name where imagename is img_name
-        String value=null;
-        String[] column ={DataBase.AnalysedData};
+       List<String> value=new ArrayList<>();
+        String[] column ={DataBase.AnalysedData,dataBase.GoogleAnalyticsApiResponse};
         Cursor cursor=db.query(DataBase.Table_Name,column,DataBase.ImageName+" = '"+img_name+"'",null,null,null,null);
 
         Log.wtf("cursor ", String.valueOf(cursor.getCount()));
@@ -149,7 +149,9 @@ public class DataBaseAdapter{
         {
             Log.wtf("cursor ","1");
             int text_index=cursor.getColumnIndex(DataBase.AnalysedData);
-            value=cursor.getString(text_index);
+            int analysed_text_index=cursor.getColumnIndex(DataBase.GoogleAnalyticsApiResponse);
+            value.add(0,cursor.getString(text_index));
+            value.add(1,cursor.getString(analysed_text_index));
         }
         cursor.close();
         db.close();
@@ -169,7 +171,7 @@ public class DataBaseAdapter{
             language =DataBase.ImageTransText;
         }
 
-        String[] column ={language};
+        String[] column ={DataBase.ArabicToEnglishText};
         Cursor cursor=db.query(DataBase.Table_Name,column,DataBase.ImageName+" = '"+img_name+"'",null,null,null,null);
         Log.wtf("cursor ", String.valueOf(cursor.getCount()));
         while(cursor.moveToNext())
@@ -316,7 +318,7 @@ public class DataBaseAdapter{
                 +" VARCHAR(255),"+ImageURI+" VARCHAR(255),"+ImageText+" VARCHAR(255),"+ImageKey+" VARCHAR(255),"
                 +ImageTransText+" VARCHAR(255),"+ArabicToEnglishText+" VARCHAR(255),"+AnalysedData+" VARCHAR(255),"
                 +GeoCoordinates+" VARCHAR(255),"+Location+" VARCHAR(255),"+State+" VARCHAR(255),"
-                +GoogleAnalyticsApiResponse+"VARCHAR(255));";
+                +GoogleAnalyticsApiResponse+" VARCHAR(255));";
 
             public DataBase(Context context) {
             super(context, Database_Name, null, Database_Version);

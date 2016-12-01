@@ -975,7 +975,9 @@ public class DirectDocument extends NavigationBarActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        startActivity(new Intent(DirectDocument.this,HomeScreen.class));
+
+        Intent intent =new Intent(DirectDocument.this,HomeScreen.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 }

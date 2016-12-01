@@ -8,6 +8,7 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -37,20 +38,20 @@ public class GoogleAnalyticsApi {
 
         RequestQueue requestQueue = Volley.newRequestQueue(c);
         Log.wtf("volley","1");
-        String url="https://language.googleapis.com/v1/documents:analyzeEntities?fields=entities&key=AIzaSyAukiG7vFB3H0L2ovv2N0pUk3_TY9YmxVc";
+        String url="http://gosigmaway.com/api/tiga/analyzeText.php";
         //String url= "http://gosigmaway.com:8085/RAWS/process/tiga?imageName="+file.getName().replace(" ","%20");
-        StringRequest stringRequest=new StringRequest(url, new Response.Listener<String>() {
+        StringRequest stringRequest=new StringRequest(Request.Method.POST,url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.i("response array", response);
+                Log.i("google response array", response);
                 DataBaseAdapter dataBaseAdapter =new DataBaseAdapter(c);
                 Log.d("in sever call" , String.valueOf(c));
                    id=dataBaseAdapter.updatedata(file.getName(),"GoogleAnalyticsApiResponse",response);
-                if (id==0)
+              /*  if (id==0)
                 {
                     Log.wtf("Analysed data not updated", String.valueOf(id));
-                    /*MainPage obj=new MainPage();
-                    obj.changepage();*/
+                    *//*MainPage obj=new MainPage();
+                    obj.changepage();*//*
                    imgrequest img= new imgrequest();
                     img.imgrequest(c);
                     progressDialog.dismiss();
@@ -59,16 +60,16 @@ public class GoogleAnalyticsApi {
 
                 else if (id>=1) {
                     Log.wtf("Analysed data updated", String.valueOf(id));
-                 /*   MainPage obj=new MainPage();
-                    obj.changepage();*/
-               /*     MainPage obj=new MainPage();
-                    obj.analysedchanger();*/
+                 *//*   MainPage obj=new MainPage();
+                    obj.changepage();*//*
+               *//*     MainPage obj=new MainPage();
+                    obj.analysedchanger();*//*
                     imgrequest img= new imgrequest();
                     img.imgrequest(c);
                     progressDialog.dismiss();
 
 
-                }
+                }*/
             }
         }, new Response.ErrorListener() {
             @Override
@@ -85,8 +86,8 @@ public class GoogleAnalyticsApi {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> param1 = new HashMap<String, String>();
-                param1.put("image_name", info.ImageName);
-                param1.put("ocr_text", info.EngText);
+                param1.put("image_name", file.getName());
+                param1.put("translated_text", info.EngText);
                 return param1;
             }
         };

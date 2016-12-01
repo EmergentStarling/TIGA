@@ -440,10 +440,6 @@ public class Documents extends AppCompatActivity implements AdapterView.OnItemSe
 
         @Override
         protected void onPostExecute(Void aVoid) {
-
-
-
-
             startActivity(ImageDetails);
             progress.dismiss();
             super.onPostExecute(aVoid);

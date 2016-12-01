@@ -32,6 +32,8 @@ import com.example.sigmaway.homeimage.CustomClasses.ImageInfo;
 import com.example.sigmaway.homeimage.CustomClasses.LocationGetter;
 import com.example.sigmaway.homeimage.CustomClasses.Ocr;
 import com.example.sigmaway.homeimage.MainActivities.DirectDocument;
+import com.example.sigmaway.homeimage.MainActivities.HomeScreen;
+import com.example.sigmaway.homeimage.MainActivities.NavigationBarActivity;
 import com.example.sigmaway.homeimage.R;
 import com.example.sigmaway.homeimage.SlideableTabs.MainPage;
 import com.example.sigmaway.homeimage.SlideableTabs.Ocrtext_ArabFrag;
@@ -98,12 +100,13 @@ public class Language_Popup extends AppCompatActivity {
         setContentView(R.layout.language_popup);
         sharedPref = getApplication().getSharedPreferences("shrdpref", Context.MODE_PRIVATE);
         FileURI = Uri.parse(sharedPref.getString("ImgUri", "no name"));
+        file=new File(FileURI.toString());
         LangBtn= (Button) findViewById(R.id.popup_ocr_language_btn);
         spinner= (Spinner) findViewById(R.id.popup_ocr_language);
         ArrayAdapter Spinner_Adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item,lang_list);
         spinner.setAdapter(Spinner_Adapter);
         activity=this;
-        file=new File(FileURI.toString());
+
         dataBaseAdapter =new DataBaseAdapter(this);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -140,7 +143,7 @@ public class Language_Popup extends AppCompatActivity {
                     ImageDetails = new Intent(Language_Popup.this, MainPage.class);
 
                     Log.i("Direct Document", "ocr lang btn");
-
+                    FileURI = Uri.parse(sharedPref.getString("ImgUri", "no name"));
                     TempUri= FileURI.getPath();
                     c = getApplicationContext();
                     Log.i("Document", "on long1");
@@ -191,6 +194,8 @@ public class Language_Popup extends AppCompatActivity {
                 Log.i("aysnc", "ocr obj");
                 OcrObj.Ocr(c);
                 Log.i("aysnc", "ocr obj called");
+                FileURI = Uri.parse(sharedPref.getString("ImgUri", "no name"));
+                TempUri= FileURI.getPath();
                 Bitmap bmp = BitmapFactory.decodeFile(TempUri);
 
                 Mat GrayImg = new Mat();
@@ -208,13 +213,17 @@ public class Language_Popup extends AppCompatActivity {
                 Log.i("OCr text from Document", OcrText );
           /*   String OcrText1= OcrText.replace("\"","heloooooo");
               Log.i("OCr text from Document", OcrText1 );*/
-                    long id=dataBaseAdapter.updatedata(tempuifile.getName(),"text",OcrText);
+                FileURI = Uri.parse(sharedPref.getString("ImgUri", "no name"));
+                file=new File(FileURI.toString());
+                    long id=dataBaseAdapter.updatedata(file.getName(),"text",OcrText);
                     if (id==0)
                         Log.wtf("data not updated", String.valueOf(id));
                     else if (id>=1)
                         Log.wtf("data updated", String.valueOf(id));
                     Log.wtf("test if id", String.valueOf(id));
                 value1 = new ArrayList<String>();
+                FileURI = Uri.parse(sharedPref.getString("ImgUri", "no name"));
+                file=new File(FileURI.toString());
                 value1= dataBaseAdapter.getdata(file.getName());
             }
             else
@@ -299,6 +308,8 @@ public class Language_Popup extends AppCompatActivity {
             if (SpinnerPosition==1)
             {
                 ImageInfo info=new ImageInfo();
+                FileURI = Uri.parse(sharedPref.getString("ImgUri", "no name"));
+                file=new File(FileURI.toString());
                 info.ImageName=file.getName();
                 info.EngText=value1.get(0);
                 info.Keyword=value1.get(1);
@@ -338,8 +349,10 @@ public class Language_Popup extends AppCompatActivity {
         }
         @Override
         protected Integer doInBackground(Void... params) {
+            FileURI = Uri.parse(sharedPref.getString("ImgUri", "no name"));
+            file=new File(FileURI.toString());
             String engtext= dataBaseAdapter.GetTranslatedText(file.getName(),"en");
-            Log.wtf("translated text frag",engtext.toString());
+            //Log.wtf("translated text frag",engtext.toString());
             if (engtext.equals("NULL"))
             {
                 RequestQueue requestQueue = Volley.newRequestQueue(activity);
@@ -420,6 +433,7 @@ public class Language_Popup extends AppCompatActivity {
             super.onPostExecute(s);
             Log.i("ocrtext translation", "onpostexecute");
             ImageDetails.putExtra("language",lang_list[SpinnerPosition]);
+            ImageDetails.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(ImageDetails);
             progress.dismiss();
 
